@@ -32,6 +32,9 @@ import org.rapidpm.vaadin.jumpstart.gui.uilogic.properties.PropertyService;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
+import static com.vaadin.ui.UI.getCurrent;
+import static org.rapidpm.ddi.DI.activateDI;
+
 public class RapidMenuBar extends MenuBar {
 
   public static final String MENUBAR = "menubar";
@@ -47,16 +50,19 @@ public class RapidMenuBar extends MenuBar {
     addItem(propertyService.resolve("menue.default.main"), null, null)
         .addItem(propertyService.resolve("menue.default.main.logout"), menuItem -> {
           getSession().close();
-          final Page page = UI.getCurrent().getPage();
+          final Page page = getCurrent().getPage();
           page.setLocation("/");
         });
-//    addItem(propertyService.resolve("menue.default.chat"), menuItem -> MainWindow.getCurrent().setWorkingAreaContainer(DI.activateDI(new RapidChat())));
-    addItem(propertyService.resolve("menue.default.help"), null, null)
-        .addItem(propertyService.resolve("menue.default.help.contact"), menuItem -> UI.getCurrent().addWindow(DI.activateDI(ContactScreen.class)))
-        .addItem(propertyService.resolve("menue.default.help.support"), menuItem -> UI.getCurrent().addWindow(DI.activateDI(SupportScreen.class)))
-        .addItem(propertyService.resolve("menue.default.help.impressum"), menuItem -> UI.getCurrent().addWindow(DI.activateDI(ImpressumScreen.class)))
-        .addItem(propertyService.resolve("menue.default.help.disclaimer"), menuItem -> UI.getCurrent().addWindow(DI.activateDI(DisclaimerScreen.class)));
+    MenuItem menuItemHelp = addItem(resolve("menue.default.help"), null, null);
+    menuItemHelp.addItem(resolve("menue.default.help.contact"), menuItem -> getCurrent().addWindow(activateDI(ContactScreen.class)));
+    menuItemHelp.addItem(resolve("menue.default.help.support"), menuItem -> getCurrent().addWindow(activateDI(SupportScreen.class)));
+    menuItemHelp.addItem(resolve("menue.default.help.impressum"), menuItem -> getCurrent().addWindow(activateDI(ImpressumScreen.class)));
+    menuItemHelp.addItem(resolve("menue.default.help.disclaimer"), menuItem -> getCurrent().addWindow(activateDI(DisclaimerScreen.class)));
 
+  }
+
+  private String resolve(String key){
+    return propertyService.resolve(key);
   }
 
 }

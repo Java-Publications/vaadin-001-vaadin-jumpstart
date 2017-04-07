@@ -23,8 +23,10 @@ import static java.util.Arrays.asList;
 public class LoginScreenCustom extends LoginScreen {
 
   //how to make this more comfortable for the developer ?
+  public static final String LOGIN_SCREEN = "loginScreen";
   public static final String USERNAME_FIELD = "tfUsername";
   public static final String PASSWORD_FIELD = "pfPassword";
+  public static final String LANGUAGE_COMBO = "cbLanguage";
   public static final String LOGIN_BUTTON = "btnLogin";
   public static final String USERNAME = "username";
   public static final String LANGUAGE_SESSION_ATTRIBUTE = "language";
@@ -34,6 +36,7 @@ public class LoginScreenCustom extends LoginScreen {
   @Inject MainWindow mainWindow;
 
   public LoginScreenCustom() {
+    this.setId(LOGIN_SCREEN);
     tfUsername.setId(USERNAME_FIELD);
     pfPassword.setId(PASSWORD_FIELD);
     btnLogin.setId(LOGIN_BUTTON);
@@ -61,10 +64,11 @@ public class LoginScreenCustom extends LoginScreen {
   @PostConstruct
   public void postconstruct() {
 
+    cbLanguage.setId(LANGUAGE_COMBO);
     cbLanguage.setItems(
         asList(
             resolve("login.language.en"),
-            resolve("login.language.en"))
+            resolve("login.language.de"))
     );
 
     tfUsername.setCaption(resolve("login.username"));
@@ -84,7 +88,7 @@ public class LoginScreenCustom extends LoginScreen {
               Case.matchCase(() -> Result.success(loginService.loadUser(username, password))), // Default Case
               Case.matchCase(() -> username.isEmpty(), () -> Result.failure(resolve("login.failed.description.empty.username"))),
               Case.matchCase(() -> password.isEmpty(), () -> Result.failure(resolve("login.failed.description.empty.password"))),
-              Case.matchCase(() -> loginService.isLoginAllowed(username, password), () -> Result.failure(resolve("login.failed.description")))
+              Case.matchCase(() ->  ! loginService.isLoginAllowed(username, password), () -> Result.failure(resolve("login.failed.description")))
           )
           .bind(validateUser -> validateUser
                   .ifPresent(user -> {
@@ -96,7 +100,6 @@ public class LoginScreenCustom extends LoginScreen {
                   failedMessage,
                   Notification.Type.WARNING_MESSAGE));
     });
-
   }
 
   private String resolve(String key) {

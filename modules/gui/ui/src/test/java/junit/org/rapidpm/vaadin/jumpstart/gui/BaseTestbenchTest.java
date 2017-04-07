@@ -7,6 +7,8 @@ import com.vaadin.testbench.TestBenchTestCase;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Rule;
+import org.junit.rules.TestName;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.WebDriver;
@@ -29,6 +31,10 @@ import java.time.LocalDateTime;
  */
 public class BaseTestbenchTest extends TestBenchTestCase {
 
+  @Rule public TestName testName = new TestName();
+
+
+
   public static final String baseUrl = "http://localhost:" + MainUndertow.DEFAULT_SERVLET_PORT + MainUndertow.MYAPP;
   public static final String VAADIN_TESTBENCH_DRIVER_PROPERTY = "vaadin.testbench.driver";
   public static final String FIREFOX = "firefox";
@@ -36,7 +42,7 @@ public class BaseTestbenchTest extends TestBenchTestCase {
   public static final String PHANTOMJS = "phantomjs";
   public static final String JAVAFX = "javafx";
 //  public static final String DEAFAULT_WEB_DRIVER = JAVAFX;
-  //  public static final String DEAFAULT_WEB_DRIVER = PHANTOMJS;
+//    public static final String DEAFAULT_WEB_DRIVER = PHANTOMJS;
   public static final String DEAFAULT_WEB_DRIVER = CHROME;
   private RemoteWebDriver remoteWebDriver;
 
@@ -49,23 +55,21 @@ public class BaseTestbenchTest extends TestBenchTestCase {
     DI.activateDI(this);
     Main.deploy();
     setUpTestbench();
+    saveScreenshot("before");
   }
 
   //@Before
   public void setUpTestbench() throws Exception {
 
-//    System.setProperty("phantomjs.binary.path", "/Users/svenruppert/Applications/phantomjs-2.0.0-macosx/bin/phantomjs");
+    System.setProperty("phantomjs.binary.path", "/Users/svenruppert/Applications/phantomjs-2.0.0-macosx/bin/phantomjs");
 
     String absolutePathChromeDriver = new File("").getAbsolutePath() + "/_data/driver/osx/chrome/chromedriver";
-    System.out.println("absolutePathChromeDriver = " + absolutePathChromeDriver);
     System.setProperty("webdriver.chrome.driver", absolutePathChromeDriver);
 
     String absolutePathGeckoDriver = new File("").getAbsolutePath() + "/_data/driver/osx/gecko/geckodriver";
-    System.out.println("absolutePathGeckoDriver = " + absolutePathGeckoDriver);
     System.setProperty("webdriver.gecko.driver", absolutePathGeckoDriver);
 
     String absolutePathPhantomJS = new File("").getAbsolutePath() + "/_data/driver/osx/phantomjs/phantomjs";
-    System.out.println("absolutePathPhantomJS = " + absolutePathPhantomJS);
     System.setProperty("phantomjs.binary.path", absolutePathPhantomJS);
 
 
@@ -130,6 +134,7 @@ public class BaseTestbenchTest extends TestBenchTestCase {
 
   @After
   public void tearDown() throws Exception {
+    saveScreenshot("after");
     tearDownTestbench();
     Main.stop();
     DI.clearReflectionModel();
@@ -153,7 +158,7 @@ public class BaseTestbenchTest extends TestBenchTestCase {
   }
 
   protected void saveScreenshot(String name) throws IOException {
-    String fileName = String.format("%s_%s.png", getClass().getSimpleName(), name);
+    String fileName = String.format("%s_%s.png", getClass().getSimpleName() + "_" + testName.getMethodName(), name);
     byte[] screenshotAs = remoteWebDriver.getScreenshotAs(OutputType.BYTES);
     File file = new File("target", fileName);
     try (FileOutputStream fileOutputStream = new FileOutputStream(file)) {

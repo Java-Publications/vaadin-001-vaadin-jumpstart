@@ -93,8 +93,28 @@
       <groupId>org.seleniumhq.selenium</groupId>
       <artifactId>selenium-java</artifactId>
       <version>3.3.1</version>
+      <!--<version>2.53.1</version>-->
       <scope>test</scope>
     </dependency>
+
+
+    <!--&lt;!&ndash; https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-chrome-driver &ndash;&gt;-->
+    <!--<dependency>-->
+      <!--<groupId>org.seleniumhq.selenium</groupId>-->
+      <!--<artifactId>selenium-chrome-driver</artifactId>-->
+      <!--<version>3.3.1</version>-->
+      <!--<scope>test</scope>-->
+    <!--</dependency>-->
+
+    <!--<dependency>-->
+      <!--<groupId>org.seleniumhq.selenium</groupId>-->
+      <!--<artifactId>selenium-firefox-driver</artifactId>-->
+      <!--<version>3.3.1</version>-->
+      <!--<scope>test</scope>-->
+    <!--</dependency>-->
+
+
+
     <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-exec -->
     <dependency>
       <groupId>org.apache.commons</groupId>

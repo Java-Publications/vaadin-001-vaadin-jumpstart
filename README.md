@@ -71,3 +71,9 @@ Here wwe could start and configure the used Undertow.
 
 The Microservice used here is from RapidPM - [java-microservice.org]{http://www.java-micoservice.org}
 or you can check out the soures at github - []{}
+
+## Developer Help
+
+### Howto start the servlet container for development?
+Create a run config in intelliJ. ;-)
+![IntelliJ Screenshot][./_data/doc/RunMain.png]

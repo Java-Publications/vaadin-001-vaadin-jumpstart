@@ -1,10 +1,8 @@
 package junit.org.rapidpm.vaadin.jumpstart.gui;
 
 import com.vaadin.testbench.By;
-import com.vaadin.testbench.elements.HorizontalLayoutElement;
-import com.vaadin.testbench.elements.VerticalLayoutElement;
-import com.vaadin.ui.HorizontalLayout;
 import org.openqa.selenium.WebElement;
+import org.rapidpm.vaadin.jumpstart.gui.basics.MainWindowImpl;
 import org.rapidpm.vaadin.jumpstart.gui.menubar.RapidMenuBar;
 import org.rapidpm.vaadin.jumpstart.gui.screens.login.LoginScreenCustom;
 import org.rapidpm.vaadin.jumpstart.gui.uilogic.properties.PropertyService;
@@ -26,14 +24,16 @@ public class BaseMicroserviceTest extends BaseTestbenchTest {
   }
 
   protected WebElement getElement(final String usernameField) {
-    final WebElement webElement = mainLayout();
-    org.openqa.selenium.By id = By.id(usernameField);
-    return webElement.findElement(id);
+    return mainLayout()
+        .findElement(By.id(usernameField));
   }
 
   protected WebElement mainLayout() {
-//    return $(VerticalLayoutElement.class).first();
-    return $(HorizontalLayoutElement.class).first();
+    return findElement(By.id(MainWindowImpl.WORKING_AREA_CONTAINER));
+  }
+
+  protected WebElement mainMenue(){
+    return findElement(By.id(RapidMenuBar.MENUBAR));
   }
 
   public <T extends BaseTestbenchTest> T walk2MenuBar() {
@@ -44,7 +44,10 @@ public class BaseMicroserviceTest extends BaseTestbenchTest {
   }
 
   public WebElement menubar() {
-    final WebElement menubar = getElement(RapidMenuBar.MENUBAR);
-    return menubar;
+    return getElement(RapidMenuBar.MENUBAR);
+  }
+
+  public String resolve(String key) {
+    return propertyService.resolve(key);
   }
 }
