@@ -105,8 +105,9 @@
     <undertow.version>2.0.0.Alpha1</undertow.version>
     <resteasy-undertow.version>3.1.2.Final</resteasy-undertow.version>
 
-  </properties>
+    <rapidpm-microservice.version>0.8.0-SNAPSHOT</rapidpm-microservice.version>
 
+  </properties>
 
   <dependencyManagement>
     <dependencies>
@@ -132,13 +133,17 @@
         <version>${project.version}</version>
       </dependency>
 
-
       <dependency>
         <groupId>${project.groupId}</groupId>
         <artifactId>charts-jumpstart-modules-backend-logic</artifactId>
         <version>${project.version}</version>
       </dependency>
 
+      <dependency>
+        <groupId>${project.groupId}</groupId>
+        <artifactId>charts-jumpstart-modules-backend-persistence</artifactId>
+        <version>${project.version}</version>
+      </dependency>
 
       <dependency>
         <groupId>${project.groupId}</groupId>
@@ -161,24 +166,19 @@
         <scope>import</scope>
       </dependency>
 
-
-      <!--RapidPM stuff    !! BOM needed !!! -->
       <dependency>
-        <groupId>org.rapidpm.microservice</groupId>
-        <artifactId>rapidpm-microservice-modules-core</artifactId>
-        <version>0.7.0-SNAPSHOT</version>
+        <groupId>com.vaadin</groupId>
+        <artifactId>vaadin-testbench</artifactId>
+        <version>${vaadin-testbench-api.version}</version>
       </dependency>
 
+      <!--RapidPM stuff  -->
       <dependency>
         <groupId>org.rapidpm.microservice</groupId>
-        <artifactId>rapidpm-microservice-modules-core-testutils</artifactId>
-        <version>0.7.0-SNAPSHOT</version>
-        <scope>test</scope>
-      </dependency>
-      <dependency>
-        <groupId>org.rapidpm.microservice</groupId>
-        <artifactId>rapidpm-microservice-modules-optionals-metrics-health</artifactId>
-        <version>0.7.0-SNAPSHOT</version>
+        <artifactId>rapidpm-microservice-bom</artifactId>
+        <version>${rapidpm-microservice.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
       </dependency>
 
     </dependencies>
@@ -188,6 +188,13 @@
   <dependencies>
 
     <!--global TDD-->
+    <!--<dependency>-->
+    <!--<groupId>junit</groupId>-->
+    <!--<artifactId>junit</artifactId>-->
+    <!--<version>4.12</version>-->
+    <!--<scope>test</scope>-->
+    <!--</dependency>-->
+
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
@@ -424,7 +431,6 @@
         </plugins>
       </build>
     </profile>
-
 
     <profile>
       <id>java-jdk-8</id>
@@ -691,7 +697,6 @@
       </reporting>
 
     </profile>
-
 
     <profile>
       <id>qm-qs-jacoco</id>
@@ -968,7 +973,6 @@
         </plugins>
       </reporting>
     </profile>
-
 
     <profile>
       <id>repo-allow-vaadin</id>

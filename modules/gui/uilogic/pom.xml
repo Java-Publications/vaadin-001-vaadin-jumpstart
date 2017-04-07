@@ -18,5 +18,11 @@
       <groupId>${project.groupId}</groupId>
       <artifactId>charts-jumpstart-modules-api</artifactId>
     </dependency>
+
+    <dependency>
+      <groupId>org.rapidpm.dynamic-cdi</groupId>
+      <artifactId>rapidpm-dynamic-cdi-modules-core</artifactId>
+    </dependency>
+
   </dependencies>
 </project>

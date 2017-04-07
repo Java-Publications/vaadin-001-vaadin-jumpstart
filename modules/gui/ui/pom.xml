@@ -35,6 +35,10 @@
       <groupId>${project.groupId}</groupId>
       <artifactId>charts-jumpstart-modules-backend-logic</artifactId>
     </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>charts-jumpstart-modules-backend-persistence</artifactId>
+    </dependency>
 
     <dependency>
       <groupId>${project.groupId}</groupId>
@@ -59,6 +63,68 @@
       <groupId>com.vaadin</groupId>
       <artifactId>vaadin-themes</artifactId>
     </dependency>
+    <!--<dependency>-->
+      <!--<groupId>com.vaadin</groupId>-->
+      <!--<artifactId>vaadin-widgets</artifactId>-->
+    <!--</dependency>-->
+
+    <dependency>
+      <groupId>com.vaadin</groupId>
+      <artifactId>vaadin-client-compiled</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.rapidpm.dynamic-cdi</groupId>
+      <artifactId>rapidpm-dynamic-cdi-modules-core</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>com.vaadin</groupId>
+      <artifactId>vaadin-testbench</artifactId>
+      <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>org.eclipse.jetty.websocket</groupId>
+          <artifactId>websocket-api</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.seleniumhq.selenium</groupId>
+      <artifactId>selenium-java</artifactId>
+      <version>3.3.1</version>
+      <scope>test</scope>
+    </dependency>
+    <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-exec -->
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-exec</artifactId>
+      <version>1.3</version>
+      <scope>test</scope>
+    </dependency>
+
+
+    <!--<dependency>-->
+      <!--<groupId>com.google.guava</groupId>-->
+      <!--<artifactId>guava</artifactId>-->
+      <!--<version>19.0</version>-->
+    <!--</dependency>-->
+
+
+    <dependency>
+      <groupId>com.machinepublishers</groupId>
+      <artifactId>jbrowserdriver</artifactId>
+      <version>0.17.5</version>
+      <scope>test</scope>
+    </dependency>
+    <!-- Required by TestBench https://github.com/vaadin/testbench/issues/872 -->
+    <dependency>
+      <groupId>com.google.code.gson</groupId>
+      <artifactId>gson</artifactId>
+      <version>2.8.0</version>
+      <scope>test</scope>
+    </dependency>
+
   </dependencies>
 
 
@@ -135,6 +201,18 @@
     </plugins>
   </build>
 
+  <profiles>
+    <profile>
+      <id>web-driver-chrome</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+        <property>
+          <name>vaadin.testbench.driver</name>
+          <value>chrome</value>
+        </property>
+      </activation>
+    </profile>
+  </profiles>
 
 
 </project>

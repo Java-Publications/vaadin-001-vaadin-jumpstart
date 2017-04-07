@@ -15,6 +15,12 @@ Vaadin Archetype creates redundant dependencies in pom (ui module)
         </dependency>
 
 
+
+
+unused import com.vaadin.ui.CustomComponent; created from the designer
+
+
+
 Add stagemonitor to ui module
 
 
