@@ -57,6 +57,7 @@ public class RapidMenuBar extends MenuBar {
           page.setLocation("/");
         });
     final MenuItem menuItemAnalytics = addItem(resolve("menue.default.analytics"), null, null);
+
     final MenuItem menuItemAnalyticsGithub = menuItemAnalytics.addItem(resolve("menue.default.analytics.github"), null, null);
     menuItemAnalyticsGithub.addItem(resolve("menue.default.analytics.github.orga"), null, (Command) selectedItem -> {
       final Component content = getCurrent().getContent();

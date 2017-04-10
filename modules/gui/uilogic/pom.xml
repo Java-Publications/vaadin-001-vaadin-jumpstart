@@ -11,13 +11,6 @@
 
   <artifactId>charts-jumpstart-modules-gui-ui-logic</artifactId>
 
-  <properties>
-    <!--cdn-->
-    <vaadin.widgetset.mode>local</vaadin.widgetset.mode>
-  </properties>
-
-
-
   <dependencies>
     <dependency>
       <groupId>${project.groupId}</groupId>

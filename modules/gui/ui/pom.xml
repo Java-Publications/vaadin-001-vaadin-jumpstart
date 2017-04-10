@@ -12,6 +12,10 @@
   <artifactId>charts-jumpstart-modules-gui-ui</artifactId>
 
 
+  <!--<properties>-->
+    <!--<vaadin.widgetset.mode>cdn</vaadin.widgetset.mode>-->
+  <!--</properties>-->
+
   <dependencies>
 
     <!-- Custom components -->

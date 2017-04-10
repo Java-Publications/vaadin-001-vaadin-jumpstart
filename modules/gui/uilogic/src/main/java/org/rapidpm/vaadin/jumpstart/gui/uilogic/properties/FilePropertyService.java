@@ -73,6 +73,7 @@ public class FilePropertyService implements PropertyService {
 
     storage.put("analytics.github.orga.clear", "Clear");
     storage.put("analytics.github.orga.load", "Load data");
+    storage.put("analytics.github.orga.chart.title", "Fancy Chart Title");
 
   }
 }

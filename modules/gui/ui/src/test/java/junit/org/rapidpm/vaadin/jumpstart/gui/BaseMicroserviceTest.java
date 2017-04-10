@@ -1,6 +1,9 @@
 package junit.org.rapidpm.vaadin.jumpstart.gui;
 
 import com.vaadin.testbench.By;
+import com.vaadin.testbench.elements.ComboBoxElement;
+import com.vaadin.testbench.elements.VerticalLayoutElement;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.rapidpm.vaadin.jumpstart.gui.basics.MainWindowImpl;
 import org.rapidpm.vaadin.jumpstart.gui.menubar.RapidMenuBar;
@@ -17,9 +20,14 @@ public class BaseMicroserviceTest extends BaseTestbenchTest {
   @Inject public PropertyService propertyService;
 
   public <T extends BaseTestbenchTest> T loginAsAdmin() {
-    getElement(LoginScreenCustom.USERNAME_FIELD).sendKeys("admin");
-    getElement(LoginScreenCustom.PASSWORD_FIELD).sendKeys("admin");
-    getElement(LoginScreenCustom.LOGIN_BUTTON).click();
+    final VerticalLayoutElement loginElement = $(VerticalLayoutElement.class).id(LoginScreenCustom.LOGIN_SCREEN);
+    loginElement.findElement(By.id(LoginScreenCustom.USERNAME_FIELD)).sendKeys("admin");
+    loginElement.findElement(By.id(LoginScreenCustom.PASSWORD_FIELD)).sendKeys("admin");
+    ComboBoxElement comboBoxElement = $(ComboBoxElement.class).id(LoginScreenCustom.LANGUAGE_COMBO);
+    comboBoxElement.openPopup();
+    comboBoxElement.sendKeys(Keys.ARROW_DOWN);
+    comboBoxElement.sendKeys(Keys.ENTER);
+    loginElement.findElement(By.id(LoginScreenCustom.LOGIN_BUTTON)).click();
     return (T) this;
   }
 
@@ -32,7 +40,7 @@ public class BaseMicroserviceTest extends BaseTestbenchTest {
     return findElement(By.id(MainWindowImpl.WORKING_AREA_CONTAINER));
   }
 
-  protected WebElement mainMenue(){
+  protected WebElement mainMenue() {
     return findElement(By.id(RapidMenuBar.MENUBAR));
   }
 
