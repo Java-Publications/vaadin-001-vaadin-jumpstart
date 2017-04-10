@@ -3,13 +3,13 @@ package junit.org.rapidpm.vaadin.jumpstart.gui.screens.login;
 import com.vaadin.testbench.elements.ComboBoxElement;
 import com.vaadin.testbench.elements.HorizontalLayoutElement;
 import com.vaadin.testbench.elements.NotificationElement;
+import com.vaadin.testbench.elements.VerticalLayoutElement;
 import junit.org.rapidpm.vaadin.jumpstart.gui.BaseMicroserviceTest;
 import org.junit.Assert;
 import org.junit.Test;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.rapidpm.vaadin.jumpstart.gui.screens.login.LoginScreenCustom;
-import org.rapidpm.vaadin.jumpstart.gui.uilogic.api.Languages;
 
 import static org.junit.Assert.assertEquals;
 
@@ -21,7 +21,7 @@ public class LoginScreenCustomTest extends BaseMicroserviceTest {
 
   // not working on MainLayout so far
   protected WebElement mainLayout() {
-    return $(HorizontalLayoutElement.class).id(LoginScreenCustom.LOGIN_SCREEN);
+    return $(VerticalLayoutElement.class).id(LoginScreenCustom.LOGIN_SCREEN);
   }
 
   @Test
@@ -36,7 +36,7 @@ public class LoginScreenCustomTest extends BaseMicroserviceTest {
     comboBoxElement.sendKeys(Keys.ENTER);
     saveScreenshot("klicked_001");
 
-    Assert.assertEquals(comboBoxElement.getValue(), resolve("login.language.en"));
+    Assert.assertEquals(comboBoxElement.getValue(), resolve("login.language.de"));
 
     getElement(LoginScreenCustom.LOGIN_BUTTON).click();
 
@@ -58,9 +58,4 @@ public class LoginScreenCustomTest extends BaseMicroserviceTest {
     assertEquals(propertyService.resolve("login.failed.description"), notification.getDescription());
     assertEquals("warning", notification.getType());
   }
-
-
-
-
-
 }

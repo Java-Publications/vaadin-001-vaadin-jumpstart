@@ -11,6 +11,11 @@
 
   <artifactId>charts-jumpstart-modules-gui-ui-logic</artifactId>
 
+  <properties>
+    <!--cdn-->
+    <vaadin.widgetset.mode>local</vaadin.widgetset.mode>
+  </properties>
+
 
 
   <dependencies>
@@ -18,11 +23,16 @@
       <groupId>${project.groupId}</groupId>
       <artifactId>charts-jumpstart-modules-api</artifactId>
     </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>charts-jumpstart-modules-backend-storage-plainjdbc</artifactId>
+    </dependency>
+
 
     <dependency>
       <groupId>org.rapidpm.dynamic-cdi</groupId>
       <artifactId>rapidpm-dynamic-cdi-modules-core</artifactId>
     </dependency>
-
   </dependencies>
+
 </project>

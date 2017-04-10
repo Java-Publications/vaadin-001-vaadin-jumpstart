@@ -20,9 +20,12 @@
 package org.rapidpm.vaadin.jumpstart.gui.menubar;
 
 import com.vaadin.server.Page;
+import com.vaadin.ui.Component;
+import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.MenuBar;
-import com.vaadin.ui.UI;
 import org.rapidpm.ddi.DI;
+import org.rapidpm.vaadin.jumpstart.gui.basics.MainWindow;
+import org.rapidpm.vaadin.jumpstart.gui.screens.analytics.github.organizations.GithubOrganizationsScreenCustom;
 import org.rapidpm.vaadin.jumpstart.gui.screens.info.ContactScreen;
 import org.rapidpm.vaadin.jumpstart.gui.screens.info.DisclaimerScreen;
 import org.rapidpm.vaadin.jumpstart.gui.screens.info.ImpressumScreen;
@@ -47,13 +50,26 @@ public class RapidMenuBar extends MenuBar {
 
     setId(MENUBAR);
 
-    addItem(propertyService.resolve("menue.default.main"), null, null)
-        .addItem(propertyService.resolve("menue.default.main.logout"), menuItem -> {
+    addItem(resolve("menue.default.main"), null, null)
+        .addItem(resolve("menue.default.main.logout"), menuItem -> {
           getSession().close();
           final Page page = getCurrent().getPage();
           page.setLocation("/");
         });
-    MenuItem menuItemHelp = addItem(resolve("menue.default.help"), null, null);
+    final MenuItem menuItemAnalytics = addItem(resolve("menue.default.analytics"), null, null);
+    final MenuItem menuItemAnalyticsGithub = menuItemAnalytics.addItem(resolve("menue.default.analytics.github"), null, null);
+    menuItemAnalyticsGithub.addItem(resolve("menue.default.analytics.github.orga"), null, (Command) selectedItem -> {
+      final Component content = getCurrent().getContent();
+      final MainWindow mainWindow = (MainWindow) content;
+      final ComponentContainer workingAreaContainer = mainWindow.getWorkingAreaContainer();
+      workingAreaContainer.removeAllComponents();
+      final GithubOrganizationsScreenCustom custom = DI.activateDI(GithubOrganizationsScreenCustom.class);
+      workingAreaContainer.addComponent(custom);
+    });
+
+    menuItemAnalyticsGithub.addItem(resolve("menue.default.analytics.github.follower"), null, null);
+
+    final MenuItem menuItemHelp = addItem(resolve("menue.default.help"), null, null);
     menuItemHelp.addItem(resolve("menue.default.help.contact"), menuItem -> getCurrent().addWindow(activateDI(ContactScreen.class)));
     menuItemHelp.addItem(resolve("menue.default.help.support"), menuItem -> getCurrent().addWindow(activateDI(SupportScreen.class)));
     menuItemHelp.addItem(resolve("menue.default.help.impressum"), menuItem -> getCurrent().addWindow(activateDI(ImpressumScreen.class)));
@@ -61,7 +77,7 @@ public class RapidMenuBar extends MenuBar {
 
   }
 
-  private String resolve(String key){
+  private String resolve(String key) {
     return propertyService.resolve(key);
   }
 

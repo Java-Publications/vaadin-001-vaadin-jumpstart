@@ -107,6 +107,7 @@
 
     <rapidpm-microservice.version>0.8.0-SNAPSHOT</rapidpm-microservice.version>
 
+    <vaadin-charts.version>4.0.0</vaadin-charts.version>
   </properties>
 
   <dependencyManagement>
@@ -141,7 +142,7 @@
 
       <dependency>
         <groupId>${project.groupId}</groupId>
-        <artifactId>charts-jumpstart-modules-backend-persistence</artifactId>
+        <artifactId>charts-jumpstart-modules-backend-storage-plainjdbc</artifactId>
         <version>${project.version}</version>
       </dependency>
 
@@ -166,10 +167,22 @@
         <scope>import</scope>
       </dependency>
 
+      <!--<dependency>-->
+        <!--<groupId>com.vaadin</groupId>-->
+        <!--<artifactId>vaadin-widgets</artifactId>-->
+        <!--<version>${vaadin.version}</version>-->
+      <!--</dependency>-->
+      <!--<dependency>-->
+        <!--<groupId>com.vaadin</groupId>-->
+        <!--<artifactId>vaadin-testbench</artifactId>-->
+        <!--<version>${vaadin-testbench-api.version}</version>-->
+      <!--</dependency>-->
+
+
       <dependency>
         <groupId>com.vaadin</groupId>
-        <artifactId>vaadin-testbench</artifactId>
-        <version>${vaadin-testbench-api.version}</version>
+        <artifactId>vaadin-charts</artifactId>
+        <version>${vaadin-charts.version}</version>
       </dependency>
 
       <!--RapidPM stuff  -->
@@ -181,6 +194,19 @@
         <scope>import</scope>
       </dependency>
 
+
+      <dependency>
+        <groupId>com.zaxxer</groupId>
+        <artifactId>HikariCP</artifactId>
+        <version>2.6.1</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.hsqldb</groupId>
+        <artifactId>hsqldb</artifactId>
+        <scope>test</scope>
+        <version>2.3.4</version>
+      </dependency>
     </dependencies>
   </dependencyManagement>
 

@@ -24,9 +24,14 @@ import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.UI;
 
 public interface MainWindow extends Component {
+
+  String WORKING_AREA_CONTAINER = "workingAreaContainer";
+
   static MainWindow getCurrent() {
     return (MainWindow) UI.getCurrent().getContent();
   }
 
-  void setWorkingAreaContainer(ComponentContainer components);
+  ComponentContainer getWorkingAreaContainer();
+
+  void setWorkingAreaContainer(ComponentContainer componentContainer);
 }

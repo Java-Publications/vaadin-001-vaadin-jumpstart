@@ -6,29 +6,16 @@
   <meta name="vaadin-version" content="8.0.2">
  </head>
  <body>
- <vaadin-horizontal-layout content="">
   <vaadin-vertical-layout width="100px">
-   <vaadin-label width="100px" height="25px" plain-text _id="labelUsername">
-    username
-   </vaadin-label>
-   <vaadin-label width="100px" height="25px" plain-text _id="labelPassword">
-    password
-   </vaadin-label>
-   <vaadin-label width="100px" height="25px" plain-text _id="tfLanguage" :middle :right>
-    language
-   </vaadin-label>
-   <vaadin-button width="100px" height="25px" plain-text _id="btnLogin">
-    Login
+   <vaadin-text-field height="25px" value="username" _id="tfUsername"></vaadin-text-field>
+   <vaadin-password-field height="25px" value="password" _id="pfPassword"></vaadin-password-field>
+   <vaadin-combo-box height="25px" data-item-type="java.lang.String" _id="cbLanguage">
+    <option item="lang001">German</option>
+    <option item="lang002">English</option>
+   </vaadin-combo-box>
+   <vaadin-button width="100px" height="25px" value="language" plain-text _id="btnLogin">
+     Login 
    </vaadin-button>
   </vaadin-vertical-layout>
-  <vaadin-vertical-layout>
-   <vaadin-text-field height="25px" _id="tfUsername"></vaadin-text-field>
-   <vaadin-password-field height="25px" _id="pfPassword"></vaadin-password-field>
-   <vaadin-combo-box height="25px" data-item-type="java.lang.String" _id="cbLanguage">
-    <option item="Option1">German</option>
-    <option item="Option2">English</option>
-   </vaadin-combo-box>
-  </vaadin-vertical-layout>
- </vaadin-horizontal-layout>
  </body>
 </html>

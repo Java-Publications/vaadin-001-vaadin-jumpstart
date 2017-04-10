@@ -36,12 +36,6 @@ public class BaseMicroserviceTest extends BaseTestbenchTest {
     return findElement(By.id(RapidMenuBar.MENUBAR));
   }
 
-  public <T extends BaseTestbenchTest> T walk2MenuBar() {
-    getElement(LoginScreenCustom.USERNAME_FIELD).sendKeys("admin");
-    getElement(LoginScreenCustom.PASSWORD_FIELD).sendKeys("admin");
-    getElement(LoginScreenCustom.LOGIN_BUTTON).click();
-    return (T) this;
-  }
 
   public WebElement menubar() {
     return getElement(RapidMenuBar.MENUBAR);

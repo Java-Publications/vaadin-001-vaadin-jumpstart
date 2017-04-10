@@ -13,10 +13,10 @@
   <artifactId>charts-jumpstart-modules-gui</artifactId>
   <packaging>pom</packaging>
   <modules>
+    <module>widgetset</module>
     <module>design</module>
     <module>uilogic</module>
     <module>ui</module>
-    <module>widgetset</module>
   </modules>
 
 

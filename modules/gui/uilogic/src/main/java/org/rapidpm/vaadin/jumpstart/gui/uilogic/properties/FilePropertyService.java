@@ -52,7 +52,7 @@ public class FilePropertyService implements PropertyService {
     storage.put("login.language.de", "German");
     storage.put("login.language.en", "English");
 
-    storage.put("app.logo", "/images/rapidpm.PNG"); // i18n
+    storage.put("app.logo", "/images/applogo.png"); // i18n
     storage.put("app.version", "Jumpstart Version 0.x.y"); // i18n
 
 
@@ -65,6 +65,14 @@ public class FilePropertyService implements PropertyService {
     storage.put("menue.default.main", "Home"); // i18n
     storage.put("menue.default.main.logout", "Logout"); // i18n7
 
-    storage.put("menue.default.chat", "Chat"); // i18n
+    storage.put("menue.default.analytics", "Analytics"); // i18n7
+    storage.put("menue.default.analytics.github", "Github"); // i18n7
+    storage.put("menue.default.analytics.github.orga", "Organisations"); // i18n7
+    storage.put("menue.default.analytics.github.follower", "Follower"); // i18n7
+
+
+    storage.put("analytics.github.orga.clear", "Clear");
+    storage.put("analytics.github.orga.load", "Load data");
+
   }
 }

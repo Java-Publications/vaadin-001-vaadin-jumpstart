@@ -4,6 +4,7 @@ import com.vaadin.event.ShortcutAction;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.UI;
+import org.rapidpm.ddi.DI;
 import org.rapidpm.frp.core.model.Result;
 import org.rapidpm.frp.core.model.matcher.Case;
 import org.rapidpm.vaadin.jumpstart.gui.basics.MainWindow;
@@ -33,7 +34,7 @@ public class LoginScreenCustom extends LoginScreen {
 
   @Inject LoginService loginService;
   @Inject PropertyService propertyService;
-  @Inject MainWindow mainWindow;
+//  @Inject MainWindow mainWindow;
 
   public LoginScreenCustom() {
     this.setId(LOGIN_SCREEN);
@@ -71,8 +72,12 @@ public class LoginScreenCustom extends LoginScreen {
             resolve("login.language.de"))
     );
 
+    cbLanguage.setValue(resolve("login.language.en"));
+
     tfUsername.setCaption(resolve("login.username"));
+    tfUsername.setValue("");
     pfPassword.setCaption(resolve("login.password"));
+    pfPassword.setValue("");
 
     btnLogin.setCaption(resolve("login.name"));
     btnLogin.setClickShortcut(ShortcutAction.KeyCode.ENTER);
@@ -86,13 +91,14 @@ public class LoginScreenCustom extends LoginScreen {
       Case
           .match(
               Case.matchCase(() -> Result.success(loginService.loadUser(username, password))), // Default Case
-              Case.matchCase(() -> username.isEmpty(), () -> Result.failure(resolve("login.failed.description.empty.username"))),
-              Case.matchCase(() -> password.isEmpty(), () -> Result.failure(resolve("login.failed.description.empty.password"))),
+              Case.matchCase(username::isEmpty, () -> Result.failure(resolve("login.failed.description.empty.username"))),
+              Case.matchCase(password::isEmpty, () -> Result.failure(resolve("login.failed.description.empty.password"))),
               Case.matchCase(() ->  ! loginService.isLoginAllowed(username, password), () -> Result.failure(resolve("login.failed.description")))
           )
           .bind(validateUser -> validateUser
                   .ifPresent(user -> {
                     getSession().setAttribute(User.class, user);
+                    final MainWindow mainWindow = DI.activateDI(MainWindow.class);
                     UI.getCurrent().setContent(mainWindow);
                   }),
               failedMessage -> Notification.show(

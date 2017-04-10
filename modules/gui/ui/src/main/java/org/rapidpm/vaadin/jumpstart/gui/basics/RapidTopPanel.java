@@ -29,6 +29,9 @@ import javax.inject.Inject;
 
 public class RapidTopPanel implements TopPanel {
 
+
+  private static final String APP_LOGO = "app.logo";
+  private static final String APP_VERSION = "app.version";
   private final HorizontalLayout iconsLayout = new HorizontalLayout();
 
   @Inject
@@ -44,24 +47,28 @@ public class RapidTopPanel implements TopPanel {
     iconsLayout.setWidth("100%");
     iconsLayout.setMargin(new MarginInfo(false, false, false, false));
 
-    if (propertyService.hasKey("app.logo")) {
-      final String resourceName = propertyService.resolve("app.logo");
+    if (propertyService.hasKey(APP_LOGO)) {
+      final String resourceName = propertyService.resolve(APP_LOGO);
       final Image iconLeft = new Image(null, new ClassResource(resourceName));
       final Image iconRight = new Image(null, new ClassResource(resourceName));
 
       iconsLayout.addComponent(iconLeft);
       iconsLayout.setComponentAlignment(iconLeft, Alignment.TOP_LEFT);
 
-      if (propertyService.hasKey("app.version")) {
-        final Label versionLabel = new Label(propertyService.resolve("app.version"));
+      if (propertyService.hasKey(APP_VERSION)) {
+        final Label versionLabel = new Label(propertyService.resolve(APP_VERSION));
         versionLabel.setSizeUndefined();
         iconsLayout.addComponent(versionLabel);
         iconsLayout.setComponentAlignment(versionLabel, Alignment.MIDDLE_CENTER);
         iconsLayout.setExpandRatio(versionLabel, 1.0f);
+      } else {
+        logger().info("no value for key : " + APP_VERSION);
       }
 
       iconsLayout.addComponent(iconRight);
       iconsLayout.setComponentAlignment(iconRight, Alignment.TOP_RIGHT);
+    } else {
+      logger().info("no value for key : " + APP_LOGO);
     }
   }
 

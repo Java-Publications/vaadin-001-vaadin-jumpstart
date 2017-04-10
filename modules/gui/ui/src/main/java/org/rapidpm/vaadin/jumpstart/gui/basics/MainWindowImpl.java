@@ -28,7 +28,7 @@ import javax.inject.Inject;
 
 public class MainWindowImpl extends VerticalLayout implements MainWindow {
 
-  public static final String WORKING_AREA_CONTAINER = "workingAreaContainer";
+
 
   @Inject PropertyService propertyService;
   @Inject RapidMenuBar menubar;
@@ -61,10 +61,10 @@ public class MainWindowImpl extends VerticalLayout implements MainWindow {
     return workingAreaContainer;
   }
 
-  public void setWorkingAreaContainer(final ComponentContainer workingArea) {
+  public void setWorkingAreaContainer(final ComponentContainer componentContainer) {
     this.workingAreaContainer.removeAllComponents();
-    this.replaceComponent(workingAreaContainer, workingArea);
-    workingAreaContainer = workingArea;
+    this.replaceComponent(workingAreaContainer, componentContainer);
+    workingAreaContainer = componentContainer;
     this.workingAreaContainer.setSizeFull();
 //    VerticalLayout components = new VerticalLayout();
     this.workingAreaContainer.setId(WORKING_AREA_CONTAINER);

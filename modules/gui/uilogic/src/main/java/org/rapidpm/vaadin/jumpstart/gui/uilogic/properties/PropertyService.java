@@ -21,5 +21,5 @@ package org.rapidpm.vaadin.jumpstart.gui.uilogic.properties;
 
 public interface PropertyService  {
   String resolve(String key);
-  boolean hasKey(String keyy);
+  boolean hasKey(String key);
 }
