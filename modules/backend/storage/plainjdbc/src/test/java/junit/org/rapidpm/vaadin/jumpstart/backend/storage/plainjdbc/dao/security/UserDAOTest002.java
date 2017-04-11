@@ -17,11 +17,13 @@
  * under the License.
  */
 
-package junit.org.rapidpm.vaadin.jumpstart.backend.storage.plainjdbc.dao.v001;
+package junit.org.rapidpm.vaadin.jumpstart.backend.storage.plainjdbc.dao.security;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.rapidpm.vaadin.jumpstart.api.model.security.User;
 import org.rapidpm.vaadin.jumpstart.backend.storage.plainjdbc.JDBCConnectionPool;
+import org.rapidpm.vaadin.jumpstart.backend.storage.plainjdbc.dao.security.UserDAO;
 
 import java.util.Optional;
 
@@ -35,7 +37,7 @@ public class UserDAOTest002 extends UserDAOBaseTest {
     final UserDAO userDAO = new UserDAO()
         .workOnPool(connectionPool);
 
-    final Optional<UserDAO.User> user = userDAO.readUser(1001);
+    final Optional<User> user = userDAO.readUser(1001);
 
     Assert.assertNotNull(user);
     Assert.assertTrue(user.isPresent());

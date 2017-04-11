@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package junit.org.rapidpm.vaadin.jumpstart.backend.storage.plainjdbc.dao.v001;
+package junit.org.rapidpm.vaadin.jumpstart.backend.storage.plainjdbc.dao.security;
 
 
 import junit.org.rapidpm.vaadin.jumpstart.backend.storage.plainjdbc.HsqlBaseTest;
@@ -39,7 +39,12 @@ public class UserDAOBaseTest extends HsqlBaseTest {
   @Override
   public String[] createSQLInitScriptArray() {
     return new String[]{
-        "CLEAR_SCHEMA.sql", "CREATE_TABLE_EXAMPLE.sql"
+        "0000_CLEAR_SCHEMA.sql",
+        "0001_CREATE_TABLE_CUSTOMER.sql",
+        "0002_INSERT_DATA_TABLE_CUSTOMER.sql",
+        "0003_CREATE_TABLE_LOGIN.sql",
+        "0004_CREATE_REF_TABLE_LOGIN.sql",
+        "0005_INSERT_DATA_TABLE_LOGIN.sql"
     };
 
   }

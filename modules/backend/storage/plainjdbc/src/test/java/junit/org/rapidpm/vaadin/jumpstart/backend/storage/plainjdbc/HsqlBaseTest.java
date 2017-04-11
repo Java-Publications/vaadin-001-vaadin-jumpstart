@@ -48,19 +48,21 @@ public abstract class HsqlBaseTest {
   //TODO could be more dynamic
   public void initSchema(final String poolname) throws Exception {
 
-//    DI.clearReflectionModel();
-//    DI.activatePackages("org.rapidpm");
-//    activateDI4Packages();
-//    DI.activatePackages(this.getClass());
-//    DI.activateDI(this);
-
     for (final String script : scripts) {
       final Class<? extends HsqlBaseTest> aClass = baseTestClass();
-      System.out.println(aClass.getName());
+      LOGGER.info("baseTestClass -> " + aClass.getName());
 
       final URL resource = aClass.getResource(script);
-      LOGGER.debug("resource.toExternalForm() = " + resource.toExternalForm());
-      executeSqlScript(poolname, resource.getPath());
+      if (resource == null) {
+        LOGGER.info("load ressource from production folder resources/sql/"+ script);
+        final URL aClassResource = aClass.getResource("/sql/" + script);
+        LOGGER.debug("resource.toExternalForm() = " + aClassResource);
+        executeSqlScript(poolname, aClassResource.getPath());
+
+      } else {
+        LOGGER.debug("resource.toExternalForm() = " + resource.toExternalForm());
+        executeSqlScript(poolname, resource.getPath());
+      }
     }
 
     final URL testSqlResource = getClass().getResource(getClass().getSimpleName() + ".sql");
