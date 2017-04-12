@@ -19,41 +19,28 @@
 
 package junit.org.rapidpm.vaadin.jumpstart.backend.storage.plainjdbc.dao.security;
 
-
 import org.junit.Assert;
 import org.junit.Test;
 import org.rapidpm.vaadin.jumpstart.api.model.security.User;
 import org.rapidpm.vaadin.jumpstart.backend.storage.plainjdbc.JDBCConnectionPool;
-import org.rapidpm.vaadin.jumpstart.backend.storage.plainjdbc.dao.security.UserDAO;
+import org.rapidpm.vaadin.jumpstart.backend.storage.plainjdbc.dao.security.UserHsqlDBDAO;
 
 import java.util.Optional;
 
-public class UserDAOTest001 extends UserDAOBaseTest {
-
+public class UserHsqlDBDAOTest002 extends UserHsqlDBDAOBaseTest {
 
   @Test
   public void test001() throws Exception {
     final Optional<JDBCConnectionPool> connectionPoolOptional = pools().getPool(poolname());
     final JDBCConnectionPool connectionPool = connectionPoolOptional.get();
-    final UserDAO userDAO = new UserDAO().workOnPool(connectionPool);
 
-    final User user = new User(001, "jon", "doe", "jon.d@yahooo.com");
-    userDAO.writeUser(user);
+    final UserHsqlDBDAO userDAO = new UserHsqlDBDAO();
+    userDAO.workOnPool(connectionPool);
 
-    final Optional<User> resultUser = userDAO.readUser(001);
-    Assert.assertNotNull(resultUser);
-    Assert.assertTrue(resultUser.isPresent());
-    Assert.assertEquals(user.getCustomerID(), resultUser.get().getCustomerID());
-    Assert.assertEquals(user.getFirstname(), resultUser.get().getFirstname());
+    final Optional<User> user = userDAO.read(1001);
 
-    final User user02 = new User(002, "jane", "doe", "jane.d@yahooo.com");
-    userDAO.writeUser(user02);
-
-    final Optional<String> resultMail = userDAO.readMailAddress(002);
-    Assert.assertNotNull(resultMail);
-    Assert.assertTrue(resultMail.isPresent());
-    Assert.assertEquals("jane.d@yahooo.com", resultMail.get());
+    Assert.assertNotNull(user);
+    Assert.assertTrue(user.isPresent());
+    Assert.assertEquals("Marge", user.get().getFirstname());
   }
-
-
 }

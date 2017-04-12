@@ -17,43 +17,37 @@
  * under the License.
  */
 
-package org.rapidpm.vaadin.jumpstart.backend.storage.plainjdbc.dao;
+package org.rapidpm.vaadin.jumpstart.backend.storage.plainjdbc.dao.crud;
 
-import com.zaxxer.hikari.HikariDataSource;
-import org.rapidpm.vaadin.jumpstart.backend.storage.plainjdbc.JDBCConnectionPool;
+import org.rapidpm.vaadin.jumpstart.backend.storage.plainjdbc.dao.BasicJDBCOperation;
 
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Optional;
+import java.util.function.Function;
 
-public interface QueryOneValue<T> extends BasicOperation {
+@FunctionalInterface
+public interface QueryOneValue<T> extends BasicJDBCOperation<T> {
 
-  default Optional<T> execute(JDBCConnectionPool connectionPool) {
-    final HikariDataSource dataSource = connectionPool.getDataSource();
-    try (final Connection connection = dataSource.getConnection();
-         final Statement statement = connection.createStatement();
-         final ResultSet resultSet = statement.executeQuery(createSQL())) {
-      final boolean next = resultSet.next();
-      if (next) {
-        final T value = getFirstElement(resultSet);
-        if (resultSet.next()) {
+  default Optional<T> executeJDBCMethod(final Statement statement, final String sql) throws SQLException {
+
+    final ResultSet resultSet = statement.executeQuery(createSQL());
+    final boolean next = resultSet.next();
+    if (next) {
+      final Optional<T> firstElement = createMappingFunction().apply(resultSet);
+      if (resultSet.next()) {
           throw new RuntimeException("too many values are selected with query");
         } else {
-          return Optional.of(value);
+          return firstElement;
         }
       } else {
         return Optional.empty();
       }
-
-    } catch (final SQLException e) {
-      e.printStackTrace();
-    }
-    return Optional.empty();
   }
 
-
-  T getFirstElement(final ResultSet resultSet) throws SQLException;
+  default Function<ResultSet, Optional<T>> createMappingFunction() {
+    throw new RuntimeException("createMappingFunction -> not yet implemented");
+  }
 
 }

@@ -27,7 +27,7 @@ import org.junit.Before;
 import org.rapidpm.vaadin.jumpstart.backend.storage.plainjdbc.JDBCConnectionPools;
 
 
-public class UserDAOBaseTest extends HsqlBaseTest {
+public class UserHsqlDBDAOBaseTest extends HsqlBaseTest {
 
   final JDBCConnectionPools pools = new JDBCConnectionPools();
 
@@ -74,7 +74,7 @@ public class UserDAOBaseTest extends HsqlBaseTest {
 
   @Override
   public Class baseTestClass() {
-    return UserDAOBaseTest.class;
+    return UserHsqlDBDAOBaseTest.class;
   }
 
 }

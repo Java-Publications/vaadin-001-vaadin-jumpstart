@@ -17,31 +17,18 @@
  * under the License.
  */
 
-package org.rapidpm.vaadin.jumpstart.backend.storage.plainjdbc.dao;
+package org.rapidpm.vaadin.jumpstart.backend.storage.plainjdbc.dao.crud;
 
-import java.sql.ResultSet;
+import org.rapidpm.vaadin.jumpstart.backend.storage.plainjdbc.dao.BasicJDBCOperation;
+
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Optional;
 
-public interface QueryOneTypedValue<T> extends QueryOneValue<T> {
+public interface Update extends BasicJDBCOperation<Integer> {
 
-
-  interface QueryOneInteger extends QueryOneTypedValue<Integer> {
-    default Integer getFirstElement(final ResultSet resultSet) throws SQLException {
-      return resultSet.getInt(1);
-    }
+  default Optional<Integer> executeJDBCMethod(final Statement statement, final String sql) throws SQLException {
+    return Optional.of(statement.executeUpdate(sql));
   }
-
-  interface QueryOneFloat extends QueryOneTypedValue<Float> {
-    default Float getFirstElement(final ResultSet resultSet) throws SQLException {
-      return resultSet.getFloat(1);
-    }
-  }
-
-  interface QueryOneString extends QueryOneTypedValue<String> {
-    default String getFirstElement(final ResultSet resultSet) throws SQLException {
-      return resultSet.getString(1);
-    }
-  }
-
 
 }

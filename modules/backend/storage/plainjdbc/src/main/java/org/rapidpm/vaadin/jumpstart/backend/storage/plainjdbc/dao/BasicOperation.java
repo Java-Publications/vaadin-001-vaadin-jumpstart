@@ -20,7 +20,8 @@
 package org.rapidpm.vaadin.jumpstart.backend.storage.plainjdbc.dao;
 
 
-
+@FunctionalInterface
 public interface BasicOperation {
+  // Supplier String
   String createSQL();
 }
