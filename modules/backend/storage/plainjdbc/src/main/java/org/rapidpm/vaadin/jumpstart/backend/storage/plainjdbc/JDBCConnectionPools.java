@@ -19,59 +19,62 @@
 
 package org.rapidpm.vaadin.jumpstart.backend.storage.plainjdbc;
 
-import com.zaxxer.hikari.HikariDataSource;
-import org.rapidpm.vaadin.jumpstart.backend.storage.plainjdbc.JDBCConnectionPool.Builder;
-
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.rapidpm.vaadin.jumpstart.backend.storage.plainjdbc.JDBCConnectionPool.Builder;
+
+import com.zaxxer.hikari.HikariDataSource;
 
 public class JDBCConnectionPools {
 
-  private final Map<String, JDBCConnectionPool> poolMap = new ConcurrentHashMap<>();
+    private final Map<String, JDBCConnectionPool> poolMap = new ConcurrentHashMap<>();
 
-  private JDBCConnectionPools withJDBCConnectionPool(JDBCConnectionPool pool) {
-    poolMap.put(pool.getPoolname(), pool);
-    return this;
-  }
-
-  public Builder addJDBCConnectionPool(String poolname) {
-    final Builder builder = JDBCConnectionPool.newBuilder().withParentBuilder(this);
-    return builder.withPoolname(poolname);
-  }
-
-  public void shutdownPools() {
-    poolMap.forEach((k, v) -> v.close());
-  }
-
-  public void shutdownPool(String poolname) {
-    final boolean b = poolMap.containsKey(poolname);
-    if (b) {
-      poolMap.get(poolname).close();
-      poolMap.remove(poolname);
+    private JDBCConnectionPools withJDBCConnectionPool(
+        JDBCConnectionPool pool) {
+        poolMap.put(pool.getPoolname(), pool);
+        return this;
     }
-  }
 
-  public void connectPool(String poolname) {
-    final boolean b = poolMap.containsKey(poolname);
-    if (b) {
-      poolMap.get(poolname).connect();
+    public Builder addJDBCConnectionPool(String poolname) {
+        final Builder builder = JDBCConnectionPool.newBuilder()
+            .withParentBuilder(this);
+        return builder.withPoolname(poolname);
     }
-  }
 
-  public void connectPools() {
-    poolMap.forEach((k, v) -> v.connect());
-  }
+    public void shutdownPools() {
+        poolMap.forEach((k, v) -> v.close());
+    }
 
+    public void shutdownPool(String poolname) {
+        final boolean b = poolMap.containsKey(poolname);
+        if (b) {
+            poolMap.get(poolname).close();
+            poolMap.remove(poolname);
+        }
+    }
 
-  public HikariDataSource getDataSource(String poolname) {
-    return poolMap.get(poolname) != null ? poolMap.get(poolname).getDataSource() : null;
-  }
+    public void connectPool(String poolname) {
+        final boolean b = poolMap.containsKey(poolname);
+        if (b) {
+            poolMap.get(poolname).connect();
+        }
+    }
 
-  public Optional<JDBCConnectionPool> getPool(String poolname) {
+    public void connectPools() {
+        poolMap.forEach((k, v) -> v.connect());
+    }
 
-    return Optional.ofNullable(poolMap.get(poolname));
+    public HikariDataSource getDataSource(String poolname) {
+        return poolMap.get(poolname) != null ?
+            poolMap.get(poolname).getDataSource() :
+            null;
+    }
 
-  }
+    public Optional<JDBCConnectionPool> getPool(String poolname) {
+
+        return Optional.ofNullable(poolMap.get(poolname));
+
+    }
 }

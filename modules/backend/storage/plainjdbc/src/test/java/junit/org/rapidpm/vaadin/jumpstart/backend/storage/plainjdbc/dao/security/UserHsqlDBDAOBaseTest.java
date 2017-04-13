@@ -19,62 +19,13 @@
 
 package junit.org.rapidpm.vaadin.jumpstart.backend.storage.plainjdbc.dao.security;
 
-
 import junit.org.rapidpm.vaadin.jumpstart.backend.storage.plainjdbc.HsqlBaseTest;
-import junit.org.rapidpm.vaadin.jumpstart.backend.storage.plainjdbc.InMemoryHsqldbBuilder;
-import org.junit.After;
-import org.junit.Before;
-import org.rapidpm.vaadin.jumpstart.backend.storage.plainjdbc.JDBCConnectionPools;
-
 
 public class UserHsqlDBDAOBaseTest extends HsqlBaseTest {
 
-  final JDBCConnectionPools pools = new JDBCConnectionPools();
-
-  @Override
-  public JDBCConnectionPools pools() {
-    return pools;
-  }
-
-  @Override
-  public String[] createSQLInitScriptArray() {
-    return new String[]{
-        "0000_CLEAR_SCHEMA.sql",
-        "0001_CREATE_TABLE_CUSTOMER.sql",
-        "0002_INSERT_DATA_TABLE_CUSTOMER.sql",
-        "0003_CREATE_TABLE_LOGIN.sql",
-        "0004_CREATE_REF_TABLE_LOGIN.sql",
-        "0005_INSERT_DATA_TABLE_LOGIN.sql"
-    };
-
-  }
-
-  private InMemoryHsqldbBuilder.ServerResult serverResult;
-
-  @Before
-  public void setUp() throws Exception {
-    System.out.println("poolname = " + poolname());
-
-    serverResult = InMemoryHsqldbBuilder.newBuilder()
-        .withDbName("testDB")
-        .withRandomPort()
-        .build();
-
-
-
-    startPoolsAndConnect(poolname(), serverResult.getUrl());
-    initSchema(poolname());
-  }
-
-  @After
-  public void tearDown() throws Exception {
-    pools().shutdownPool(poolname());
-
-  }
-
-  @Override
-  public Class baseTestClass() {
-    return UserHsqlDBDAOBaseTest.class;
-  }
+    @Override
+    public Class baseTestClass() {
+        return UserHsqlDBDAOBaseTest.class;
+    }
 
 }

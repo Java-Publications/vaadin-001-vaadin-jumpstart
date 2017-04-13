@@ -20,7 +20,7 @@
 package org.rapidpm.vaadin.jumpstart.gui.uilogic.event;
 
 public class EventHandlerException extends RuntimeException {
-  public EventHandlerException(String message) {
-    super(message);
-  }
+    public EventHandlerException(String message) {
+        super(message);
+    }
 }

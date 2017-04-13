@@ -9,16 +9,17 @@ import org.rapidpm.ddi.DI;
  */
 public class BaseDDITest {
 
-  @Before
-  public void setUp() throws Exception {
-    DI.clearReflectionModel();
-    DI.activatePackages("org.rapidpm");
-    DI.activatePackages(this.getClass().getPackage().getName());
-  }
+    @Before
+    public void setUp()
+        throws Exception {
+        DI.clearReflectionModel();
+        DI.activatePackages("org.rapidpm");
+        DI.activatePackages(this.getClass().getPackage().getName());
+    }
 
-
-  @After
-  public void tearDown() throws Exception {
-    DI.clearReflectionModel();
-  }
+    @After
+    public void tearDown()
+        throws Exception {
+        DI.clearReflectionModel();
+    }
 }

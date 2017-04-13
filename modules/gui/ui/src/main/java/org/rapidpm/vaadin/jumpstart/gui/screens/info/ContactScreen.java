@@ -19,16 +19,13 @@
 
 package org.rapidpm.vaadin.jumpstart.gui.screens.info;
 
-
 import javax.annotation.PostConstruct;
 
 public class ContactScreen extends BaseInfoScreen {
 
-
-
-  @PostConstruct
-  public void init() {
-    this.setCaption(propertyService.resolve("menue.default.contact"));
-  }
+    @PostConstruct
+    public void init() {
+        this.setCaption(propertyService.resolve("menue.default.contact"));
+    }
 
 }

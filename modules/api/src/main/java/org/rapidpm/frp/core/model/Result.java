@@ -17,41 +17,43 @@ import java.util.function.Consumer;
  * Created by Sven Ruppert - RapidPM - Team on 16.03.17.
  */
 public interface Result<T> {
-  void bind(Consumer<T> success, Consumer<String> failure);
+    void bind(Consumer<T> success, Consumer<String> failure);
 
-  static <T> Result<T> failure(String errorMessage) {
-    return new Failure<>(errorMessage);
-  }
-
-  static <T> Result<T> success(T value) {
-    return new Success<>(value);
-  }
-
-  class Success<T> implements Result<T> {
-
-    private final T value;
-
-    public Success(final T value) {
-      this.value = value;
+    static <T> Result<T> failure(String errorMessage) {
+        return new Failure<>(errorMessage);
     }
 
-    @Override
-    public void bind(final Consumer<T> success, final Consumer<String> failure) {
-      success.accept(value);
-    }
-  }
-
-  class Failure<T> implements Result<T> {
-
-    private final String errorMessage;
-
-    public Failure(final String errorMessage) {
-      this.errorMessage = errorMessage;
+    static <T> Result<T> success(T value) {
+        return new Success<>(value);
     }
 
-    @Override
-    public void bind(final Consumer<T> success, final Consumer<String> failure) {
-      failure.accept(errorMessage);
+    class Success<T> implements Result<T> {
+
+        private final T value;
+
+        public Success(final T value) {
+            this.value = value;
+        }
+
+        @Override
+        public void bind(final Consumer<T> success,
+            final Consumer<String> failure) {
+            success.accept(value);
+        }
     }
-  }
+
+    class Failure<T> implements Result<T> {
+
+        private final String errorMessage;
+
+        public Failure(final String errorMessage) {
+            this.errorMessage = errorMessage;
+        }
+
+        @Override
+        public void bind(final Consumer<T> success,
+            final Consumer<String> failure) {
+            failure.accept(errorMessage);
+        }
+    }
 }

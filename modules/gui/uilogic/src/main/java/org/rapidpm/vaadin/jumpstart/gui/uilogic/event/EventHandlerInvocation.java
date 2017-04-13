@@ -25,42 +25,44 @@ import java.lang.reflect.Method;
 import java.util.Objects;
 
 public class EventHandlerInvocation implements Comparable {
-  private final Object objectToCall;
-  private final Method handler;
+    private final Object objectToCall;
+    private final Method handler;
 
-  public EventHandlerInvocation(Object objectToCall, Method handler) {
-    this.objectToCall = objectToCall;
-    this.handler = handler;
-  }
-
-  public void invokeHandler(Serializable event) {
-    try {
-      handler.invoke(objectToCall, event);
-    } catch (IllegalAccessException | InvocationTargetException e) {
-      e.printStackTrace();
+    public EventHandlerInvocation(Object objectToCall, Method handler) {
+        this.objectToCall = objectToCall;
+        this.handler = handler;
     }
-  }
 
-  @Override
-  public int compareTo(Object o) {
-    return this.hashCode() - o.hashCode();
-  }
+    public void invokeHandler(Serializable event) {
+        try {
+            handler.invoke(objectToCall, event);
+        } catch (IllegalAccessException | InvocationTargetException e) {
+            e.printStackTrace();
+        }
+    }
 
-  @Override
-  public int hashCode() {
-    return Objects.hash(objectToCall, handler);
-  }
+    @Override
+    public int compareTo(Object o) {
+        return this.hashCode() - o.hashCode();
+    }
 
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-    EventHandlerInvocation that = (EventHandlerInvocation) o;
-    return Objects.equals(objectToCall, that.objectToCall) &&
-            Objects.equals(handler, that.handler);
-  }
+    @Override
+    public int hashCode() {
+        return Objects.hash(objectToCall, handler);
+    }
 
-  public boolean callsHandlerOf(Object objectWithHandler) {
-    return objectToCall == objectWithHandler;
-  }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        EventHandlerInvocation that = (EventHandlerInvocation) o;
+        return Objects.equals(objectToCall, that.objectToCall) && Objects
+            .equals(handler, that.handler);
+    }
+
+    public boolean callsHandlerOf(Object objectWithHandler) {
+        return objectToCall == objectWithHandler;
+    }
 }

@@ -27,55 +27,53 @@ import java.util.function.Function;
 @FunctionalInterface
 public interface QueryOneTypedValue<T> extends QueryOneValue<T> {
 
-//  @FunctionalInterface
-//  interface QueryOneOfType<T> extends QueryOneTypedValue<T> {
-//    default Function<ResultSet, Optional<T>> createMappingFunction() {
-//      throw new RuntimeException("not yet implemented");
-//    }
-//  }
+    //  @FunctionalInterface
+    //  interface QueryOneOfType<T> extends QueryOneTypedValue<T> {
+    //    default Function<ResultSet, Optional<T>> createMappingFunction() {
+    //      throw new RuntimeException("not yet implemented");
+    //    }
+    //  }
 
-  @FunctionalInterface
-  interface QueryOneInteger extends QueryOneTypedValue<Integer> {
-    default Function<ResultSet, Optional<Integer>> createMappingFunction() {
-      return (resultSet) -> {
-        try {
-          return Optional.of(resultSet.getInt(1));
-        } catch (SQLException e) {
-          e.printStackTrace();
+    @FunctionalInterface
+    interface QueryOneInteger extends QueryOneTypedValue<Integer> {
+        default Function<ResultSet, Optional<Integer>> createMappingFunction() {
+            return (resultSet) -> {
+                try {
+                    return Optional.of(resultSet.getInt(1));
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                return Optional.empty();
+            };
         }
-        return Optional.empty();
-      };
     }
-  }
 
-  @FunctionalInterface
-  interface QueryOneFloat extends QueryOneTypedValue<Float> {
-    default Function<ResultSet, Optional<Float>> createMappingFunction() {
-      return (resultSet) -> {
-        try {
-          return Optional.of(resultSet.getFloat(1));
-        } catch (SQLException e) {
-          e.printStackTrace();
+    @FunctionalInterface
+    interface QueryOneFloat extends QueryOneTypedValue<Float> {
+        default Function<ResultSet, Optional<Float>> createMappingFunction() {
+            return (resultSet) -> {
+                try {
+                    return Optional.of(resultSet.getFloat(1));
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                return Optional.empty();
+            };
         }
-        return Optional.empty();
-      };
     }
-  }
 
-  @FunctionalInterface
-  interface QueryOneString extends QueryOneTypedValue<String> {
-    default Function<ResultSet, Optional<String>> createMappingFunction() {
-      return (resultSet) -> {
-        try {
-          return Optional.of(resultSet.getString(1));
-        } catch (SQLException e) {
-          e.printStackTrace();
+    @FunctionalInterface
+    interface QueryOneString extends QueryOneTypedValue<String> {
+        default Function<ResultSet, Optional<String>> createMappingFunction() {
+            return (resultSet) -> {
+                try {
+                    return Optional.of(resultSet.getString(1));
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                return Optional.empty();
+            };
         }
-        return Optional.empty();
-      };
     }
-  }
-
-
 
 }

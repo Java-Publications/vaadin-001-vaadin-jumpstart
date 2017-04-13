@@ -19,19 +19,18 @@
 
 package org.rapidpm.vaadin.jumpstart.gui.screens.info;
 
-import com.vaadin.server.Sizeable;
-import org.rapidpm.vaadin.jumpstart.gui.basics.RapidWindow;
-
 import javax.annotation.PostConstruct;
 
+import org.rapidpm.vaadin.jumpstart.gui.basics.RapidWindow;
+
+import com.vaadin.server.Sizeable;
 
 public class BaseInfoScreen extends RapidWindow {
 
-
-  @PostConstruct
-  public void init() {
-    this.setWidth(50, Sizeable.Unit.PERCENTAGE);
-    this.setHeight(50, Sizeable.Unit.PERCENTAGE);
-  }
+    @PostConstruct
+    public void init() {
+        this.setWidth(50, Sizeable.Unit.PERCENTAGE);
+        this.setHeight(50, Sizeable.Unit.PERCENTAGE);
+    }
 
 }

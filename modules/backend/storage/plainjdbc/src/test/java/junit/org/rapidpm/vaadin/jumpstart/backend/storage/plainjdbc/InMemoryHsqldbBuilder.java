@@ -1,10 +1,9 @@
 package junit.org.rapidpm.vaadin.jumpstart.backend.storage.plainjdbc;
 
+import java.io.PrintWriter;
+
 import org.hsqldb.server.Server;
 import org.rapidpm.core.net.PortUtils;
-
-
-import java.io.PrintWriter;
 
 /**
  * Copyright (C) 2010 RapidPM
@@ -17,111 +16,109 @@ import java.io.PrintWriter;
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
+ * <p>
  * Created by RapidPM - Team on 02.05.16.
  */
 public class InMemoryHsqldbBuilder {
 
-  private PrintWriter errorWriter = null;
-  private PrintWriter printWriter = null;
-  private String dbName;
-  private String url;
-  private int port;
-  private boolean silent = true;
-  private boolean trace = false;
-
-  private InMemoryHsqldbBuilder() {
-  }
-
-  public static InMemoryHsqldbBuilder newBuilder() {
-    return new InMemoryHsqldbBuilder();
-  }
-
-  public InMemoryHsqldbBuilder withRandomPort() {
-    port = new PortUtils().nextFreePortForTest();
-    return this;
-  }
-
-  public InMemoryHsqldbBuilder withPort(int port) {
-    this.port = port;
-    return this;
-  }
-
-  public InMemoryHsqldbBuilder withDbName(String dbName) {
-    this.dbName = dbName;
-    return this;
-  }
-
-  public InMemoryHsqldbBuilder withErrWriter(PrintWriter writer) {
-    this.errorWriter = writer;
-    return this;
-  }
-
-  public InMemoryHsqldbBuilder withPrintWriter(PrintWriter writer) {
-    this.errorWriter = writer;
-    return this;
-  }
-
-  public InMemoryHsqldbBuilder withSilent(boolean silent) {
-    this.silent = silent;
-    return this;
-  }
-
-  public InMemoryHsqldbBuilder withTrace(boolean trace) {
-    this.trace = trace;
-    return this;
-  }
-
-  public ServerResult build() {
-
-    final Server hsqlServer = new Server();
-    hsqlServer.setDatabaseName(0, dbName);
-    hsqlServer.setDatabasePath(0, "mem:target/" + dbName);
-    hsqlServer.setPort(port);
-    hsqlServer.setAddress("127.0.0.1");
-    hsqlServer.setErrWriter(errorWriter);
-    hsqlServer.setLogWriter(printWriter);
-    hsqlServer.setSilent(silent);
-    hsqlServer.setTrace(trace);
-    hsqlServer.start();
-    hsqlServer.checkRunning(true);
-
-    url = "jdbc:hsqldb:mem://127.0.0.1:" + port + "/" + dbName;
-
-    return new ServerResult(dbName, port, hsqlServer, url);
-  }
-
-
-  public static class ServerResult {
+    private PrintWriter errorWriter = null;
+    private PrintWriter printWriter = null;
     private String dbName;
-    private int port;
-    private Server server;
     private String url;
+    private int port;
+    private boolean silent = true;
+    private boolean trace = false;
 
-
-    public ServerResult(final String dbName, final int port, final Server server, final String url) {
-      this.dbName = dbName;
-      this.port = port;
-      this.server = server;
-      this.url = url;
+    private InMemoryHsqldbBuilder() {
     }
 
-    public String getDbName() {
-      return dbName;
+    public static InMemoryHsqldbBuilder newBuilder() {
+        return new InMemoryHsqldbBuilder();
     }
 
-    public int getPort() {
-      return port;
+    public InMemoryHsqldbBuilder withRandomPort() {
+        port = new PortUtils().nextFreePortForTest();
+        return this;
     }
 
-    public Server getServer() {
-      return server;
+    public InMemoryHsqldbBuilder withPort(int port) {
+        this.port = port;
+        return this;
     }
 
-    public String getUrl() {
-      return url;
+    public InMemoryHsqldbBuilder withDbName(String dbName) {
+        this.dbName = dbName;
+        return this;
     }
-  }
 
+    public InMemoryHsqldbBuilder withErrWriter(PrintWriter writer) {
+        this.errorWriter = writer;
+        return this;
+    }
+
+    public InMemoryHsqldbBuilder withPrintWriter(PrintWriter writer) {
+        this.errorWriter = writer;
+        return this;
+    }
+
+    public InMemoryHsqldbBuilder withSilent(boolean silent) {
+        this.silent = silent;
+        return this;
+    }
+
+    public InMemoryHsqldbBuilder withTrace(boolean trace) {
+        this.trace = trace;
+        return this;
+    }
+
+    public ServerResult build() {
+
+        final Server hsqlServer = new Server();
+        hsqlServer.setDatabaseName(0, dbName);
+        hsqlServer.setDatabasePath(0, "mem:target/" + dbName);
+        hsqlServer.setPort(port);
+        hsqlServer.setAddress("127.0.0.1");
+        hsqlServer.setErrWriter(errorWriter);
+        hsqlServer.setLogWriter(printWriter);
+        hsqlServer.setSilent(silent);
+        hsqlServer.setTrace(trace);
+        hsqlServer.start();
+        hsqlServer.checkRunning(true);
+
+        url = "jdbc:hsqldb:mem://127.0.0.1:" + port + "/" + dbName;
+
+        return new ServerResult(dbName, port, hsqlServer, url);
+    }
+
+    public static class ServerResult {
+        private String dbName;
+        private int port;
+        private Server server;
+        private String url;
+
+        public ServerResult(final String dbName, final int port,
+            final Server server, final String url) {
+            this.dbName = dbName;
+            this.port = port;
+            this.server = server;
+            this.url = url;
+        }
+
+        public String getDbName() {
+            return dbName;
+        }
+
+        public int getPort() {
+            return port;
+        }
+
+        public Server getServer() {
+            return server;
+        }
+
+        public String getUrl() {
+            return url;
+        }
+    }
 
 }

@@ -19,15 +19,13 @@
 
 package org.rapidpm.vaadin.jumpstart.gui.screens.info;
 
-
 import javax.annotation.PostConstruct;
 
 public class DisclaimerScreen extends BaseInfoScreen {
 
-
-  @PostConstruct
-  public void init() {
-    this.setCaption(propertyService.resolve("menue.default.disclaimer"));
-  }
+    @PostConstruct
+    public void init() {
+        this.setCaption(propertyService.resolve("menue.default.disclaimer"));
+    }
 
 }

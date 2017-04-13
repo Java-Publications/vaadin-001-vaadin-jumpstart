@@ -12,25 +12,25 @@ import org.rapidpm.microservice.test.RestUtils;
  */
 public class MicroserviceBaseTest {
 
+    @Before
+    public void setUp()
+        throws Exception {
+        DI.clearReflectionModel();
+        DI.activatePackages("org.rapidpm");
+        DI.activatePackages(this.getClass());
+        Main.deploy();
+    }
 
-  @Before
-  public void setUp() throws Exception {
-    DI.clearReflectionModel();
-    DI.activatePackages("org.rapidpm");
-    DI.activatePackages(this.getClass());
-    Main.deploy();
-  }
+    @After
+    public void tearDown()
+        throws Exception {
+        Main.stop();
+        DI.clearReflectionModel();
+    }
 
-  @After
-  public void tearDown() throws Exception {
-    Main.stop();
-    DI.clearReflectionModel();
-  }
-
-  public String generateBasicReqURL(Class restClass) {
-    final String restAppPath = MainUndertow.CONTEXT_PATH_REST;
-    return new RestUtils().generateBasicReqURL(restClass, restAppPath);
-  }
-
+    public String generateBasicReqURL(Class restClass) {
+        final String restAppPath = MainUndertow.CONTEXT_PATH_REST;
+        return new RestUtils().generateBasicReqURL(restClass, restAppPath);
+    }
 
 }

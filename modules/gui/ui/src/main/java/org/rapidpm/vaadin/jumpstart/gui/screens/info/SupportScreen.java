@@ -19,14 +19,12 @@
 
 package org.rapidpm.vaadin.jumpstart.gui.screens.info;
 
-
 import javax.annotation.PostConstruct;
 
 public class SupportScreen extends BaseInfoScreen {
 
-
-  @PostConstruct
-  public void init() {
-    this.setCaption(propertyService.resolve("menue.default.support"));
-  }
+    @PostConstruct
+    public void init() {
+        this.setCaption(propertyService.resolve("menue.default.support"));
+    }
 }

@@ -19,10 +19,12 @@
 
 package org.rapidpm.vaadin.jumpstart.gui.menubar;
 
-import com.vaadin.server.Page;
-import com.vaadin.ui.Component;
-import com.vaadin.ui.ComponentContainer;
-import com.vaadin.ui.MenuBar;
+import static com.vaadin.ui.UI.getCurrent;
+import static org.rapidpm.ddi.DI.activateDI;
+
+import javax.annotation.PostConstruct;
+import javax.inject.Inject;
+
 import org.rapidpm.ddi.DI;
 import org.rapidpm.vaadin.jumpstart.gui.basics.MainWindow;
 import org.rapidpm.vaadin.jumpstart.gui.screens.analytics.github.organizations.GithubOrganizationsScreenCustom;
@@ -32,54 +34,69 @@ import org.rapidpm.vaadin.jumpstart.gui.screens.info.ImpressumScreen;
 import org.rapidpm.vaadin.jumpstart.gui.screens.info.SupportScreen;
 import org.rapidpm.vaadin.jumpstart.gui.uilogic.properties.PropertyService;
 
-import javax.annotation.PostConstruct;
-import javax.inject.Inject;
-
-import static com.vaadin.ui.UI.getCurrent;
-import static org.rapidpm.ddi.DI.activateDI;
+import com.vaadin.server.Page;
+import com.vaadin.ui.Component;
+import com.vaadin.ui.ComponentContainer;
+import com.vaadin.ui.MenuBar;
 
 public class RapidMenuBar extends MenuBar {
 
-  public static final String MENUBAR = "menubar";
+    public static final String MENUBAR = "menubar";
 
-  @Inject
-  PropertyService propertyService;
+    @Inject PropertyService propertyService;
 
-  @PostConstruct
-  public void initMenuBar() {
+    @PostConstruct
+    public void initMenuBar() {
 
-    setId(MENUBAR);
+        setId(MENUBAR);
 
-    addItem(resolve("menue.default.main"), null, null)
-        .addItem(resolve("menue.default.main.logout"), menuItem -> {
-          getSession().close();
-          final Page page = getCurrent().getPage();
-          page.setLocation("/");
-        });
-    final MenuItem menuItemAnalytics = addItem(resolve("menue.default.analytics"), null, null);
+        addItem(resolve("menue.default.main"), null, null)
+            .addItem(resolve("menue.default.main.logout"), menuItem -> {
+                getSession().close();
+                final Page page = getCurrent().getPage();
+                page.setLocation("/");
+            });
+        final MenuItem menuItemAnalytics = addItem(
+            resolve("menue.default.analytics"), null, null);
 
-    final MenuItem menuItemAnalyticsGithub = menuItemAnalytics.addItem(resolve("menue.default.analytics.github"), null, null);
-    menuItemAnalyticsGithub.addItem(resolve("menue.default.analytics.github.orga"), null, (Command) selectedItem -> {
-      final Component content = getCurrent().getContent();
-      final MainWindow mainWindow = (MainWindow) content;
-      final ComponentContainer workingAreaContainer = mainWindow.getWorkingAreaContainer();
-      workingAreaContainer.removeAllComponents();
-      final GithubOrganizationsScreenCustom custom = DI.activateDI(GithubOrganizationsScreenCustom.class);
-      workingAreaContainer.addComponent(custom);
-    });
+        final MenuItem menuItemAnalyticsGithub = menuItemAnalytics
+            .addItem(resolve("menue.default.analytics.github"), null, null);
+        menuItemAnalyticsGithub
+            .addItem(resolve("menue.default.analytics.github.orga"), null,
+                (Command) selectedItem -> {
+                    final Component content = getCurrent().getContent();
+                    final MainWindow mainWindow = (MainWindow) content;
+                    final ComponentContainer workingAreaContainer = mainWindow
+                        .getWorkingAreaContainer();
+                    workingAreaContainer.removeAllComponents();
+                    final GithubOrganizationsScreenCustom custom = DI
+                        .activateDI(GithubOrganizationsScreenCustom.class);
+                    workingAreaContainer.addComponent(custom);
+                });
 
-    menuItemAnalyticsGithub.addItem(resolve("menue.default.analytics.github.follower"), null, null);
+        menuItemAnalyticsGithub
+            .addItem(resolve("menue.default.analytics.github.follower"), null,
+                null);
 
-    final MenuItem menuItemHelp = addItem(resolve("menue.default.help"), null, null);
-    menuItemHelp.addItem(resolve("menue.default.help.contact"), menuItem -> getCurrent().addWindow(activateDI(ContactScreen.class)));
-    menuItemHelp.addItem(resolve("menue.default.help.support"), menuItem -> getCurrent().addWindow(activateDI(SupportScreen.class)));
-    menuItemHelp.addItem(resolve("menue.default.help.impressum"), menuItem -> getCurrent().addWindow(activateDI(ImpressumScreen.class)));
-    menuItemHelp.addItem(resolve("menue.default.help.disclaimer"), menuItem -> getCurrent().addWindow(activateDI(DisclaimerScreen.class)));
+        final MenuItem menuItemHelp = addItem(resolve("menue.default.help"),
+            null, null);
+        menuItemHelp.addItem(resolve("menue.default.help.contact"),
+            menuItem -> getCurrent()
+                .addWindow(activateDI(ContactScreen.class)));
+        menuItemHelp.addItem(resolve("menue.default.help.support"),
+            menuItem -> getCurrent()
+                .addWindow(activateDI(SupportScreen.class)));
+        menuItemHelp.addItem(resolve("menue.default.help.impressum"),
+            menuItem -> getCurrent()
+                .addWindow(activateDI(ImpressumScreen.class)));
+        menuItemHelp.addItem(resolve("menue.default.help.disclaimer"),
+            menuItem -> getCurrent()
+                .addWindow(activateDI(DisclaimerScreen.class)));
 
-  }
+    }
 
-  private String resolve(String key) {
-    return propertyService.resolve(key);
-  }
+    private String resolve(String key) {
+        return propertyService.resolve(key);
+    }
 
 }

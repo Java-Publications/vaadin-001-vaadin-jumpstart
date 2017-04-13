@@ -19,61 +19,66 @@
 
 package org.rapidpm.vaadin.jumpstart.gui.basics;
 
-import com.vaadin.ui.*;
-import org.rapidpm.vaadin.jumpstart.gui.menubar.RapidMenuBar;
-import org.rapidpm.vaadin.jumpstart.gui.uilogic.properties.PropertyService;
-
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
+import org.rapidpm.vaadin.jumpstart.gui.menubar.RapidMenuBar;
+import org.rapidpm.vaadin.jumpstart.gui.uilogic.properties.PropertyService;
+
+import com.vaadin.ui.Alignment;
+import com.vaadin.ui.Component;
+import com.vaadin.ui.ComponentContainer;
+import com.vaadin.ui.MenuBar;
+import com.vaadin.ui.VerticalLayout;
+
 public class MainWindowImpl extends VerticalLayout implements MainWindow {
 
+    @Inject PropertyService propertyService;
+    @Inject RapidMenuBar menubar;
+    @Inject TopPanel topPanel;
 
+    private ComponentContainer workingAreaContainer = new RapidPanel();
 
-  @Inject PropertyService propertyService;
-  @Inject RapidMenuBar menubar;
-  @Inject TopPanel topPanel;
+    @PostConstruct
+    private void buildMainLayout() {
+        this.setSizeFull();
+        workingAreaContainer.setSizeFull();
+        workingAreaContainer.setId(WORKING_AREA_CONTAINER);
+        menubar.setSizeUndefined();
+        Component topPanel = this.topPanel.getComponent();
+        topPanel.setSizeUndefined();
+        topPanel.setWidth("100%");
+        menubar.setWidth("100%");
+        workingAreaContainer.setSizeFull();
+        this.setSpacing(false);
+        this.addComponent(topPanel);
+        this.addComponent(menubar);
+        this.addComponent(workingAreaContainer);
+        this.setExpandRatio(workingAreaContainer, 1);
+        this.setComponentAlignment(workingAreaContainer,
+            Alignment.MIDDLE_CENTER);
+        this.setSpacing(false);
+    }
 
-  private ComponentContainer workingAreaContainer = new RapidPanel();
+    public ComponentContainer getWorkingAreaContainer() {
+        return workingAreaContainer;
+    }
 
-  @PostConstruct
-  private void buildMainLayout() {
-    this.setSizeFull();
-    workingAreaContainer.setSizeFull();
-    workingAreaContainer.setId(WORKING_AREA_CONTAINER);
-    menubar.setSizeUndefined();
-    Component topPanel = this.topPanel.getComponent();
-    topPanel.setSizeUndefined();
-    topPanel.setWidth("100%");
-    menubar.setWidth("100%");
-    workingAreaContainer.setSizeFull();
-    this.setSpacing(false);
-    this.addComponent(topPanel);
-    this.addComponent(menubar);
-    this.addComponent(workingAreaContainer);
-    this.setExpandRatio(workingAreaContainer, 1);
-    this.setComponentAlignment(workingAreaContainer, Alignment.MIDDLE_CENTER);
-    this.setSpacing(false);
-  }
+    public void setWorkingAreaContainer(
+        final ComponentContainer componentContainer) {
+        this.workingAreaContainer.removeAllComponents();
+        this.replaceComponent(workingAreaContainer, componentContainer);
+        workingAreaContainer = componentContainer;
+        this.workingAreaContainer.setSizeFull();
+        //    VerticalLayout components = new VerticalLayout();
+        this.workingAreaContainer.setId(WORKING_AREA_CONTAINER);
+        this.setExpandRatio(this.workingAreaContainer, 1.0f);
+        this.setComponentAlignment(workingAreaContainer,
+            Alignment.MIDDLE_CENTER);
+    }
 
-
-  public ComponentContainer getWorkingAreaContainer() {
-    return workingAreaContainer;
-  }
-
-  public void setWorkingAreaContainer(final ComponentContainer componentContainer) {
-    this.workingAreaContainer.removeAllComponents();
-    this.replaceComponent(workingAreaContainer, componentContainer);
-    workingAreaContainer = componentContainer;
-    this.workingAreaContainer.setSizeFull();
-//    VerticalLayout components = new VerticalLayout();
-    this.workingAreaContainer.setId(WORKING_AREA_CONTAINER);
-    this.setExpandRatio(this.workingAreaContainer, 1.0f);
-    this.setComponentAlignment(workingAreaContainer, Alignment.MIDDLE_CENTER);
-  }
-
-  public MenuBar getMenubar() {
-    return menubar;
-  }
+    public MenuBar getMenubar() {
+        return menubar;
+    }
 
 }

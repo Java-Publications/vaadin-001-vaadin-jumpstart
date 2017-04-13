@@ -8,6 +8,6 @@ import org.rapidpm.vaadin.jumpstart.backend.storage.plainjdbc.JDBCConnectionPool
 
 @FunctionalInterface
 public interface DAO {
-  //Supplier -> JDBCConnectionPool
-  JDBCConnectionPool connectionPool();
+    //Supplier -> JDBCConnectionPool
+    JDBCConnectionPool connectionPool();
 }

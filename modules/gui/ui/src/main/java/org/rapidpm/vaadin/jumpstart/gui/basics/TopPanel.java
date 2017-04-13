@@ -19,15 +19,16 @@
 
 package org.rapidpm.vaadin.jumpstart.gui.basics;
 
-import com.vaadin.ui.Component;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public interface TopPanel {
-  Component getComponent();
+import com.vaadin.ui.Component;
 
-  default Logger logger() {
-    return LoggerFactory.getLogger(this.getClass());
-  }
+public interface TopPanel {
+    Component getComponent();
+
+    default Logger logger() {
+        return LoggerFactory.getLogger(this.getClass());
+    }
 
 }

@@ -19,6 +19,8 @@
 
 package junit.org.rapidpm.vaadin.jumpstart.charts.microservice.bootstrap.v001;
 
+import java.io.IOException;
+import java.io.PrintWriter;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -27,39 +29,41 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.PrintWriter;
 
 @WebInitParam(value = "Hello World", name = "message")
 @WebServlet(urlPatterns = "/test")
 public class MessageServlet extends HttpServlet {
 
+    //  @Inject Service service;
 
-//  @Inject Service service;
+    public static final String MESSAGE = "message";
 
-  public static final String MESSAGE = "message";
+    private String message;
 
-  private String message;
+    @Override
+    public void init(final ServletConfig config)
+        throws ServletException {
+        super.init(config);
+        message = config.getInitParameter(MESSAGE);
+    }
 
-  @Override
-  public void init(final ServletConfig config) throws ServletException {
-    super.init(config);
-    message = config.getInitParameter(MESSAGE);
-  }
+    //  @Inject Service service;
 
-//  @Inject Service service;
+    @Override
+    protected void doGet(final HttpServletRequest req,
+        final HttpServletResponse resp)
+        throws ServletException, IOException {
+        PrintWriter writer = resp.getWriter();
+        req.getSession(true);
+        //    writer.write(message + " "+  service.doWork());
+        writer.write(message + " ");
+        writer.close();
+    }
 
-  @Override
-  protected void doGet(final HttpServletRequest req, final HttpServletResponse resp) throws ServletException, IOException {
-    PrintWriter writer = resp.getWriter();
-    req.getSession(true);
-//    writer.write(message + " "+  service.doWork());
-    writer.write(message + " " );
-    writer.close();
-  }
-
-  @Override
-  protected void doPost(final HttpServletRequest req, final HttpServletResponse resp) throws ServletException, IOException {
-    doGet(req, resp);
-  }
+    @Override
+    protected void doPost(final HttpServletRequest req,
+        final HttpServletResponse resp)
+        throws ServletException, IOException {
+        doGet(req, resp);
+    }
 }

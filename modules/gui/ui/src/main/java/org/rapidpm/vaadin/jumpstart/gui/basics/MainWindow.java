@@ -25,13 +25,13 @@ import com.vaadin.ui.UI;
 
 public interface MainWindow extends Component {
 
-  String WORKING_AREA_CONTAINER = "workingAreaContainer";
+    String WORKING_AREA_CONTAINER = "workingAreaContainer";
 
-  static MainWindow getCurrent() {
-    return (MainWindow) UI.getCurrent().getContent();
-  }
+    static MainWindow getCurrent() {
+        return (MainWindow) UI.getCurrent().getContent();
+    }
 
-  ComponentContainer getWorkingAreaContainer();
+    ComponentContainer getWorkingAreaContainer();
 
-  void setWorkingAreaContainer(ComponentContainer componentContainer);
+    void setWorkingAreaContainer(ComponentContainer componentContainer);
 }

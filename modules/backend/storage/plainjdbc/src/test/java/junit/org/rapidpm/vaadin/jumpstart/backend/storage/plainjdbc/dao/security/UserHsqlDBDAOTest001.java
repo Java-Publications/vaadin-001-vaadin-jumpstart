@@ -19,6 +19,7 @@
 
 package junit.org.rapidpm.vaadin.jumpstart.backend.storage.plainjdbc.dao.security;
 
+import java.util.Optional;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -26,35 +27,35 @@ import org.rapidpm.vaadin.jumpstart.api.model.security.User;
 import org.rapidpm.vaadin.jumpstart.backend.storage.plainjdbc.JDBCConnectionPool;
 import org.rapidpm.vaadin.jumpstart.backend.storage.plainjdbc.dao.security.UserHsqlDBDAO;
 
-import java.util.Optional;
-
 public class UserHsqlDBDAOTest001 extends UserHsqlDBDAOBaseTest {
 
+    @Test
+    public void test001()
+        throws Exception {
+        final Optional<JDBCConnectionPool> connectionPoolOptional = pools()
+            .getPool(poolname());
+        final JDBCConnectionPool connectionPool = connectionPoolOptional.get();
+        final UserHsqlDBDAO userDAO = new UserHsqlDBDAO();
+        userDAO.workOnPool(connectionPool);
 
-  @Test
-  public void test001() throws Exception {
-    final Optional<JDBCConnectionPool> connectionPoolOptional = pools().getPool(poolname());
-    final JDBCConnectionPool connectionPool = connectionPoolOptional.get();
-    final UserHsqlDBDAO userDAO = new UserHsqlDBDAO();
-    userDAO.workOnPool(connectionPool);
+        final User user = new User(999, "jon", "doe", "jon.d@yahooo.com");
+        userDAO.write(user);
 
-    final User user = new User(999, "jon", "doe", "jon.d@yahooo.com");
-    userDAO.write(user);
+        final Optional<User> resultUser = userDAO.read(999);
+        Assert.assertNotNull(resultUser);
+        Assert.assertTrue(resultUser.isPresent());
+        Assert.assertEquals(user.getCustomerID(),
+            resultUser.get().getCustomerID());
+        Assert
+            .assertEquals(user.getFirstname(), resultUser.get().getFirstname());
 
-    final Optional<User> resultUser = userDAO.read(999);
-    Assert.assertNotNull(resultUser);
-    Assert.assertTrue(resultUser.isPresent());
-    Assert.assertEquals(user.getCustomerID(), resultUser.get().getCustomerID());
-    Assert.assertEquals(user.getFirstname(), resultUser.get().getFirstname());
+        final User user02 = new User(998, "jane", "doe", "jane.d@yahooo.com");
+        userDAO.write(user02);
 
-    final User user02 = new User(998, "jane", "doe", "jane.d@yahooo.com");
-    userDAO.write(user02);
-
-    final Optional<String> resultMail = userDAO.readMailAddress(998);
-    Assert.assertNotNull(resultMail);
-    Assert.assertTrue(resultMail.isPresent());
-    Assert.assertEquals("jane.d@yahooo.com", resultMail.get());
-  }
-
+        final Optional<String> resultMail = userDAO.readMailAddress(998);
+        Assert.assertNotNull(resultMail);
+        Assert.assertTrue(resultMail.isPresent());
+        Assert.assertEquals("jane.d@yahooo.com", resultMail.get());
+    }
 
 }

@@ -19,7 +19,8 @@
 
 package org.rapidpm.vaadin.jumpstart.gui.uilogic.properties;
 
-public interface PropertyService  {
-  String resolve(String key);
-  boolean hasKey(String key);
+public interface PropertyService {
+    String resolve(String key);
+
+    boolean hasKey(String key);
 }

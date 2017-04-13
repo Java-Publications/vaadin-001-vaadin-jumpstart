@@ -20,8 +20,10 @@
 package org.rapidpm.vaadin.jumpstart.gui.uilogic.event;
 
 public interface EventDispatcher<E> {
-  void dispatchEvent(E event);
-  void addHandler(EventHandlerInvocation handler);
-  void removeHandler(EventHandlerInvocation handler);
+    void dispatchEvent(E event);
+
+    void addHandler(EventHandlerInvocation handler);
+
+    void removeHandler(EventHandlerInvocation handler);
 
 }

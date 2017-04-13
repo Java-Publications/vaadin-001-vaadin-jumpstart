@@ -25,40 +25,40 @@ import java.util.Random;
 
 public class PortUtils {
 
-  public int defaultRestPort() {
-    return 7081;
-  }
-
-  public int defaultServletPort() {
-    return 7080;
-  }
-
-  //TODO static ??
-  public int nextFreePortForTest() {
-    int counter = 0;
-    final Random random = new Random();
-    while (counter < 1_00) {
-      try {
-        final int port = 1024 + (random.nextInt(65535 - 2048));
-        new ServerSocket(port).close();
-        return port;
-      } catch (IOException ex) {
-        counter = counter + 1;
-      }
+    public int defaultRestPort() {
+        return 7081;
     }
-    // if the program gets here, no port in the range was found
-    throw new RuntimeException("no free port found");
-  }
 
-  public boolean isPortAvailable(int port) {
-    try {
-      new ServerSocket(port).close();
-    } catch (IOException e) {
-      // port is used
-      return false;
+    public int defaultServletPort() {
+        return 7080;
     }
-    // port is unused
-    return true;
-  }
+
+    //TODO static ??
+    public int nextFreePortForTest() {
+        int counter = 0;
+        final Random random = new Random();
+        while (counter < 1_00) {
+            try {
+                final int port = 1024 + (random.nextInt(65535 - 2048));
+                new ServerSocket(port).close();
+                return port;
+            } catch (IOException ex) {
+                counter = counter + 1;
+            }
+        }
+        // if the program gets here, no port in the range was found
+        throw new RuntimeException("no free port found");
+    }
+
+    public boolean isPortAvailable(int port) {
+        try {
+            new ServerSocket(port).close();
+        } catch (IOException e) {
+            // port is used
+            return false;
+        }
+        // port is unused
+        return true;
+    }
 
 }

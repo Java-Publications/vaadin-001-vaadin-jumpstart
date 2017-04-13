@@ -19,35 +19,40 @@
 
 package org.rapidpm.vaadin.jumpstart.backend.storage.plainjdbc.dao.crud;
 
-import org.rapidpm.vaadin.jumpstart.backend.storage.plainjdbc.dao.BasicJDBCOperation;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Optional;
 import java.util.function.Function;
 
+import org.rapidpm.vaadin.jumpstart.backend.storage.plainjdbc.dao.BasicJDBCOperation;
+
 @FunctionalInterface
 public interface QueryOneValue<T> extends BasicJDBCOperation<T> {
 
-  default Optional<T> executeJDBCMethod(final Statement statement, final String sql) throws SQLException {
+    default Optional<T> executeJDBCMethod(final Statement statement,
+        final String sql)
+        throws SQLException {
 
-    final ResultSet resultSet = statement.executeQuery(createSQL());
-    final boolean next = resultSet.next();
-    if (next) {
-      final Optional<T> firstElement = createMappingFunction().apply(resultSet);
-      if (resultSet.next()) {
-          throw new RuntimeException("too many values are selected with query");
+        final ResultSet resultSet = statement.executeQuery(createSQL());
+        final boolean next = resultSet.next();
+        if (next) {
+            final Optional<T> firstElement = createMappingFunction()
+                .apply(resultSet);
+            if (resultSet.next()) {
+                throw new RuntimeException(
+                    "too many values are selected with query");
+            } else {
+                return firstElement;
+            }
         } else {
-          return firstElement;
+            return Optional.empty();
         }
-      } else {
-        return Optional.empty();
-      }
-  }
+    }
 
-  default Function<ResultSet, Optional<T>> createMappingFunction() {
-    throw new RuntimeException("createMappingFunction -> not yet implemented");
-  }
+    default Function<ResultSet, Optional<T>> createMappingFunction() {
+        throw new RuntimeException(
+            "createMappingFunction -> not yet implemented");
+    }
 
 }

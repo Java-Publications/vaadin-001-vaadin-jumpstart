@@ -19,16 +19,18 @@
 
 package org.rapidpm.vaadin.jumpstart.backend.storage.plainjdbc.dao.crud;
 
-import org.rapidpm.vaadin.jumpstart.backend.storage.plainjdbc.dao.BasicJDBCOperation;
-
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Optional;
 
+import org.rapidpm.vaadin.jumpstart.backend.storage.plainjdbc.dao.BasicJDBCOperation;
+
 public interface Update extends BasicJDBCOperation<Integer> {
 
-  default Optional<Integer> executeJDBCMethod(final Statement statement, final String sql) throws SQLException {
-    return Optional.of(statement.executeUpdate(sql));
-  }
+    default Optional<Integer> executeJDBCMethod(final Statement statement,
+        final String sql)
+        throws SQLException {
+        return Optional.of(statement.executeUpdate(sql));
+    }
 
 }

@@ -19,28 +19,30 @@
 
 package junit.org.rapidpm.vaadin.jumpstart.backend.storage.plainjdbc.dao.security;
 
+import java.util.Optional;
+
 import org.junit.Assert;
 import org.junit.Test;
 import org.rapidpm.vaadin.jumpstart.api.model.security.User;
 import org.rapidpm.vaadin.jumpstart.backend.storage.plainjdbc.JDBCConnectionPool;
 import org.rapidpm.vaadin.jumpstart.backend.storage.plainjdbc.dao.security.UserHsqlDBDAO;
 
-import java.util.Optional;
-
 public class UserHsqlDBDAOTest002 extends UserHsqlDBDAOBaseTest {
 
-  @Test
-  public void test001() throws Exception {
-    final Optional<JDBCConnectionPool> connectionPoolOptional = pools().getPool(poolname());
-    final JDBCConnectionPool connectionPool = connectionPoolOptional.get();
+    @Test
+    public void test001()
+        throws Exception {
+        final Optional<JDBCConnectionPool> connectionPoolOptional = pools()
+            .getPool(poolname());
+        final JDBCConnectionPool connectionPool = connectionPoolOptional.get();
 
-    final UserHsqlDBDAO userDAO = new UserHsqlDBDAO();
-    userDAO.workOnPool(connectionPool);
+        final UserHsqlDBDAO userDAO = new UserHsqlDBDAO();
+        userDAO.workOnPool(connectionPool);
 
-    final Optional<User> user = userDAO.read(1001);
+        final Optional<User> user = userDAO.read(1001);
 
-    Assert.assertNotNull(user);
-    Assert.assertTrue(user.isPresent());
-    Assert.assertEquals("Marge", user.get().getFirstname());
-  }
+        Assert.assertNotNull(user);
+        Assert.assertTrue(user.isPresent());
+        Assert.assertEquals("Marge", user.get().getFirstname());
+    }
 }

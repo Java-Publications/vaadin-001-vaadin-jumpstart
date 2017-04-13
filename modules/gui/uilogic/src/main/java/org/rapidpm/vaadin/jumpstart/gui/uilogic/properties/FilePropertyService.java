@@ -19,61 +19,66 @@
 
 package org.rapidpm.vaadin.jumpstart.gui.uilogic.properties;
 
-import javax.annotation.PostConstruct;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.annotation.PostConstruct;
+
 public class FilePropertyService implements PropertyService {
 
-  private final Map<String, String> storage = new HashMap<>();
+    private final Map<String, String> storage = new HashMap<>();
 
-  @Override
-  public String resolve(final String key) {
-    return storage.get(key);
-  }
+    @Override
+    public String resolve(final String key) {
+        return storage.get(key);
+    }
 
-  @Override
-  public boolean hasKey(final String key) {
-    return storage.containsKey(key);
-  }
+    @Override
+    public boolean hasKey(final String key) {
+        return storage.containsKey(key);
+    }
 
-  @PostConstruct
-  public void init() {
-    storage.put("admin", "admin");
-    storage.put("login.name", "Login"); // i18n
-    storage.put("login.info", "Please enter your username and password"); // i18n
-    storage.put("login.username", "username"); // i18n
-    storage.put("login.password", "password"); // i18n
-    storage.put("login.failed", "Login failed..."); // i18n
-    storage.put("login.failed.description", "Login failed, please use right User / Password combination"); // i18n
-    storage.put("login.failed.description.empty.username", "Login failed, please use non empty username"); // i18n
-    storage.put("login.failed.description.empty.password", "Login failed, please use non empty password"); // i18n
+    @PostConstruct
+    public void init() {
+        storage.put("admin", "admin");
+        storage.put("login.name", "Login"); // i18n
+        storage.put("login.info",
+            "Please enter your username and password"); // i18n
+        storage.put("login.username", "username"); // i18n
+        storage.put("login.password", "password"); // i18n
+        storage.put("login.failed", "Login failed..."); // i18n
+        storage.put("login.failed.description",
+            "Login failed, please use right User / Password combination"); // i18n
+        storage.put("login.failed.description.empty.username",
+            "Login failed, please use non empty username"); // i18n
+        storage.put("login.failed.description.empty.password",
+            "Login failed, please use non empty password"); // i18n
 
-    storage.put("login.language.de", "German");
-    storage.put("login.language.en", "English");
+        storage.put("login.language.de", "German");
+        storage.put("login.language.en", "English");
 
-    storage.put("app.logo", "/images/applogo.png"); // i18n
-    storage.put("app.version", "Jumpstart Version 0.x.y"); // i18n
+        storage.put("app.logo", "/images/applogo.png"); // i18n
+        storage.put("app.version", "Jumpstart Version 0.x.y"); // i18n
 
+        storage.put("menue.default.help", "Help"); // i18n
+        storage.put("menue.default.help.contact", "Contact"); // i18n
+        storage.put("menue.default.help.support", "Support"); // i18n
+        storage.put("menue.default.help.impressum", "Impressum"); // i18n
+        storage.put("menue.default.help.disclaimer", "Disclaimer"); // i18n
 
-    storage.put("menue.default.help", "Help"); // i18n
-    storage.put("menue.default.help.contact", "Contact"); // i18n
-    storage.put("menue.default.help.support", "Support"); // i18n
-    storage.put("menue.default.help.impressum", "Impressum"); // i18n
-    storage.put("menue.default.help.disclaimer", "Disclaimer"); // i18n
+        storage.put("menue.default.main", "Home"); // i18n
+        storage.put("menue.default.main.logout", "Logout"); // i18n7
 
-    storage.put("menue.default.main", "Home"); // i18n
-    storage.put("menue.default.main.logout", "Logout"); // i18n7
+        storage.put("menue.default.analytics", "Analytics"); // i18n7
+        storage.put("menue.default.analytics.github", "Github"); // i18n7
+        storage.put("menue.default.analytics.github.orga",
+            "Organisations"); // i18n7
+        storage.put("menue.default.analytics.github.follower",
+            "Follower"); // i18n7
 
-    storage.put("menue.default.analytics", "Analytics"); // i18n7
-    storage.put("menue.default.analytics.github", "Github"); // i18n7
-    storage.put("menue.default.analytics.github.orga", "Organisations"); // i18n7
-    storage.put("menue.default.analytics.github.follower", "Follower"); // i18n7
+        storage.put("analytics.github.orga.clear", "Clear");
+        storage.put("analytics.github.orga.load", "Load data");
+        storage.put("analytics.github.orga.chart.title", "Fancy Chart Title");
 
-
-    storage.put("analytics.github.orga.clear", "Clear");
-    storage.put("analytics.github.orga.load", "Load data");
-    storage.put("analytics.github.orga.chart.title", "Fancy Chart Title");
-
-  }
+    }
 }

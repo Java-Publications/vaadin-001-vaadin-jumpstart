@@ -23,9 +23,8 @@ import javax.annotation.PostConstruct;
 
 public class ImpressumScreen extends BaseInfoScreen {
 
-
-  @PostConstruct
-  public void init() {
-    this.setCaption(propertyService.resolve("menue.default.impressum"));
-  }
+    @PostConstruct
+    public void init() {
+        this.setCaption(propertyService.resolve("menue.default.impressum"));
+    }
 }
