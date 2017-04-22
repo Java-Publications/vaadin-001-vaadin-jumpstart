@@ -2,8 +2,8 @@
 An industrial style multi module maven project
 
 
-## Todos
-Vaadin Archetype creates redundant dependencies in pom (ui module)
+## Todos - Bugs / Impromements
++ Vaadin Archetype creates redundant dependencies in pom (ui module)
 
         <dependency>
             <groupId>com.vaadin</groupId>
@@ -14,20 +14,35 @@ Vaadin Archetype creates redundant dependencies in pom (ui module)
             <artifactId>vaadin-themes</artifactId>
         </dependency>
 
++ unused import com.vaadin.ui.CustomComponent; created from the designer
+
+## Todos - Infrastructure
++ Add stagemonitor to ui module
+
+## Features
++ Full stack for industrial projects
++ Undertow based Microservice - Speed compered to Jetty / jRebel combination
++ DDI - Bootstrap with a minimal DI Framework, to show the potential of this
++ could be used for Workshops / Project Ramp-Up
++ structure to support different persistence technologies
+
+## Questions to solve
++ How to write good Testbench tests to navigate to the component you want to test
++ Add Ansible/Vagrant for Integration Tests
++ Add Docker for Integration Tests
++ Add JavaFX Browser for concurrent Headless Tests
++ maven target to download needed Browser-Driver
++ jooq / flyway for SQL
++ speedment integration 
++ Show the full DI Stack on localhost ( gitbucket/nexus/jenkins )
++ build the same with gradle
++ bootstrap with CDI (weld)
 
 
-
-unused import com.vaadin.ui.CustomComponent; created from the designer
-
-
-
-Add stagemonitor to ui module
 
 
 ## Scenario
 In this scenario we are in the world of ..  
-
-
 
 ## Modulestructure
 

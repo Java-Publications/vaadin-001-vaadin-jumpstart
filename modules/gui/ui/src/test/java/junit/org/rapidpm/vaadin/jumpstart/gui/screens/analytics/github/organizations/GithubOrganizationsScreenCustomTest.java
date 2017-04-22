@@ -6,12 +6,12 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.rapidpm.vaadin.jumpstart.gui.screens.analytics.github.organizations.GithubOrganizationsScreenCustom;
 
-import junit.org.rapidpm.vaadin.jumpstart.gui.BaseMicroserviceTest;
+import junit.org.rapidpm.vaadin.jumpstart.gui.BaseUITest;
 
 /**
  * Created by svenruppert on 10.04.17.
  */
-public class GithubOrganizationsScreenCustomTest extends BaseMicroserviceTest {
+public class GithubOrganizationsScreenCustomTest extends BaseUITest {
 
     private void navigateToCharts() {
         loginAsAdmin();

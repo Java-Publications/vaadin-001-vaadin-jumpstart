@@ -82,17 +82,19 @@
 
         <dependency>
             <groupId>com.vaadin</groupId>
-            <artifactId>vaadin-charts</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.vaadin</groupId>
             <artifactId>vaadin-client-compiled</artifactId>
         </dependency>
 
         <dependency>
             <groupId>org.rapidpm.dynamic-cdi</groupId>
             <artifactId>rapidpm-dynamic-cdi-modules-core</artifactId>
+        </dependency>
+
+
+        <dependency>
+            <groupId>org.rapidpm.microservice</groupId>
+            <artifactId>rapidpm-microservice-modules-core-testutils</artifactId>
+            <scope>test</scope>
         </dependency>
 
         <dependency>

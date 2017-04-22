@@ -19,4 +19,12 @@
     </modules>
 
 
+
+    <dependencies>
+        <dependency>
+            <groupId>org.rapidpm</groupId>
+            <artifactId>rapidpm-functional-reactive</artifactId>
+        </dependency>
+    </dependencies>
+
 </project>

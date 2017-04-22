@@ -5,7 +5,7 @@ import java.util.Optional;
 import org.junit.Assert;
 import org.junit.Test;
 import org.rapidpm.vaadin.jumpstart.backend.storage.plainjdbc.JDBCConnectionPool;
-import org.rapidpm.vaadin.jumpstart.backend.storage.plainjdbc.dao.security.Login;
+import org.rapidpm.vaadin.jumpstart.api.model.security.Login;
 import org.rapidpm.vaadin.jumpstart.backend.storage.plainjdbc.dao.security.LoginHsqlDBDAO;
 
 /**
@@ -26,7 +26,7 @@ public class LoginHsqlDBDAOTest001 extends LoginHsqlDBDAOBaseTest {
         dao.write(login);
 
         Optional<Login> read = dao.read(1_000);
-        
+
         Assert.assertNotNull(read);
         Assert.assertTrue(read.isPresent());
         Assert.assertEquals(login.getUserID(), read.get().getUserID());

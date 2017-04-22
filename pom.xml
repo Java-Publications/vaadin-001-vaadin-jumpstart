@@ -116,8 +116,7 @@
         <undertow.version>2.0.0.Alpha1</undertow.version>
         <resteasy-undertow.version>3.1.2.Final</resteasy-undertow.version>
 
-        <rapidpm-microservice.version>0.8.0-SNAPSHOT
-        </rapidpm-microservice.version>
+        <rapidpm-microservice.version>0.8.1-SNAPSHOT</rapidpm-microservice.version>
 
         <vaadin-charts.version>4.0.0</vaadin-charts.version>
     </properties>
@@ -215,6 +214,11 @@
                 <scope>import</scope>
             </dependency>
 
+            <dependency>
+                <groupId>org.rapidpm</groupId>
+                <artifactId>rapidpm-functional-reactive</artifactId>
+                <version>0.0.1</version>
+            </dependency>
 
             <dependency>
                 <groupId>com.zaxxer</groupId>
@@ -235,13 +239,6 @@
     <dependencies>
 
         <!--global TDD-->
-        <!--<dependency>-->
-        <!--<groupId>junit</groupId>-->
-        <!--<artifactId>junit</artifactId>-->
-        <!--<version>4.12</version>-->
-        <!--<scope>test</scope>-->
-        <!--</dependency>-->
-
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>

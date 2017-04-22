@@ -11,12 +11,12 @@ import org.rapidpm.vaadin.jumpstart.gui.screens.login.LoginScreenCustom;
 import com.vaadin.testbench.elements.ComboBoxElement;
 import com.vaadin.testbench.elements.NotificationElement;
 import com.vaadin.testbench.elements.VerticalLayoutElement;
-import junit.org.rapidpm.vaadin.jumpstart.gui.BaseMicroserviceTest;
+import junit.org.rapidpm.vaadin.jumpstart.gui.BaseUITest;
 
 /**
  * Created by svenruppert on 07.04.17.
  */
-public class LoginScreenCustomTest extends BaseMicroserviceTest {
+public class LoginScreenCustomTest extends BaseUITest {
 
     // not working on MainLayout so far
     protected WebElement mainLayout() {

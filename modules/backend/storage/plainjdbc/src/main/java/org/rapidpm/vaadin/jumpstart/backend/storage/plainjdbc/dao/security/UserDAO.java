@@ -26,7 +26,8 @@ public interface UserDAO extends CrudDAO<User> {
         try {
             return Optional.of(new User(resultSet.getInt("CUSTOMER_ID"),
                 resultSet.getString("FIRSTNAME"),
-                resultSet.getString("LASTNAME"), resultSet.getString("EMAIL")));
+                resultSet.getString("LASTNAME"),
+                resultSet.getString("EMAIL")));
         } catch (SQLException e) {
             // wrap Exception into a Result container
             return Optional.empty();

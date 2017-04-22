@@ -24,7 +24,6 @@ public class InMemoryHsqldbBuilder {
     private PrintWriter errorWriter = null;
     private PrintWriter printWriter = null;
     private String dbName;
-    private String url;
     private int port;
     private boolean silent = true;
     private boolean trace = false;
@@ -85,7 +84,7 @@ public class InMemoryHsqldbBuilder {
         hsqlServer.start();
         hsqlServer.checkRunning(true);
 
-        url = "jdbc:hsqldb:mem://127.0.0.1:" + port + "/" + dbName;
+        String url = "jdbc:hsqldb:mem://127.0.0.1:" + port + "/" + dbName;
 
         return new ServerResult(dbName, port, hsqlServer, url);
     }

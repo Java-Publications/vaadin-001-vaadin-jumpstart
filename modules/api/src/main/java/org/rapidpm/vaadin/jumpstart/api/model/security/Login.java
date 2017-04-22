@@ -1,4 +1,4 @@
-package org.rapidpm.vaadin.jumpstart.backend.storage.plainjdbc.dao.security;
+package org.rapidpm.vaadin.jumpstart.api.model.security;
 
 /**
  * Created by svenruppert on 11.04.17.

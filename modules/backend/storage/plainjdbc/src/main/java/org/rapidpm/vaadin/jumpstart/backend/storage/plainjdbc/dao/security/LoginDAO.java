@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.Optional;
 import java.util.function.Function;
 
+import org.rapidpm.vaadin.jumpstart.api.model.security.Login;
 import org.rapidpm.vaadin.jumpstart.backend.storage.plainjdbc.dao.CrudDAO;
 import org.rapidpm.vaadin.jumpstart.backend.storage.plainjdbc.dao.crud.QueryOneValue;
 

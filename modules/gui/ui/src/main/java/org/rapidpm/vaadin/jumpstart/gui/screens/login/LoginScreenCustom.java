@@ -6,8 +6,8 @@ import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
 import org.rapidpm.ddi.DI;
-import org.rapidpm.frp.core.model.Result;
-import org.rapidpm.frp.core.model.matcher.Case;
+import org.rapidpm.frp.matcher.Case;
+import org.rapidpm.frp.model.Result;
 import org.rapidpm.vaadin.jumpstart.gui.basics.MainWindow;
 import org.rapidpm.vaadin.jumpstart.gui.design.login.LoginScreen;
 import org.rapidpm.vaadin.jumpstart.gui.uilogic.properties.PropertyService;

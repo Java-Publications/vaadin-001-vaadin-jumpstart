@@ -1,5 +1,6 @@
 package org.rapidpm.vaadin.jumpstart.backend.storage.plainjdbc.dao.security;
 
+import org.rapidpm.vaadin.jumpstart.api.model.security.Login;
 import org.rapidpm.vaadin.jumpstart.backend.storage.plainjdbc.dao.GenericDAO;
 
 /**
