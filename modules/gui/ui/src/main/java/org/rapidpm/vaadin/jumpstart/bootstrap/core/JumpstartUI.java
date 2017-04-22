@@ -12,7 +12,8 @@ import com.vaadin.ui.UI;
 /**
  * Created by svenruppert on 06.04.17.
  */
-@Theme("valo")
+//@Theme("valo")
+@Theme("mytheme")
 @Push
 @Widgetset("org.rapidpm.vaadin.jumpstart.gui.VaadinJumpstartWidgetset")
 public class JumpstartUI extends UI {
