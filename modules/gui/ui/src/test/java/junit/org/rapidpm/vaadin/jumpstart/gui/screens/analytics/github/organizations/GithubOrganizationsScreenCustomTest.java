@@ -32,7 +32,6 @@ public class GithubOrganizationsScreenCustomTest extends BaseUITest {
         navigateToCharts();
         getElement(GithubOrganizationsScreenCustom.BUTTON_LOAD_ID).click();
         Assert.assertTrue(true);
-
     }
 
 }

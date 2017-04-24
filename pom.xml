@@ -89,7 +89,7 @@
 
         <!--Vaadin-->
         <vaadin.version>8.0.5</vaadin.version>
-        <vaadin-testbench-api.version>5.0.0</vaadin-testbench-api.version>
+        <vaadin-testbench-api.version>5.0-SNAPSHOT</vaadin-testbench-api.version>
 
         <!--languages-->
         <kotlin.version>1.0.5</kotlin.version>
@@ -217,7 +217,7 @@
             <dependency>
                 <groupId>org.rapidpm</groupId>
                 <artifactId>rapidpm-functional-reactive</artifactId>
-                <version>0.0.1</version>
+                <version>0.0.2-SNAPSHOT</version>
             </dependency>
 
             <dependency>
@@ -250,6 +250,23 @@
             <groupId>com.google.code.findbugs</groupId>
             <artifactId>jsr305</artifactId>
             <version>3.0.2</version>
+        </dependency>
+
+        <!--Testbench stuff-->
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-java</artifactId>
+            <!--<version>3.3.1</version>-->
+            <version>3.0.1</version>
+            <!--<version>2.53.1</version>-->
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.github.detro</groupId>
+            <artifactId>ghostdriver</artifactId>
+            <scope>test</scope>
+            <version>2.0.0</version>
         </dependency>
 
         <!--Brian Goetz Concurrency Annotations-->
@@ -1062,6 +1079,20 @@
                     <url>https://maven.vaadin.com/vaadin-prereleases</url>
                 </pluginRepository>
             </pluginRepositories>
+        </profile>
+
+        <!--Testbench stuff-->
+        <profile>
+            <id>repo-allow-jitpack</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        <repositories>
+            <repository>
+                <id>jitpack.io</id>
+                <url>https://jitpack.io</url>
+            </repository>
+        </repositories>
         </profile>
     </profiles>
 

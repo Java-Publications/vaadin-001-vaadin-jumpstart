@@ -18,6 +18,14 @@ An industrial style multi module maven project
 
 ## Todos - Infrastructure
 + Add stagemonitor to ui module
++ Gatling with Vaadin ?
++ Integrate Vagrant / Ansible for Tests on Windows Machines
++ Migrate to jUnit5 ?
+
++ Version based on Spring
++ Version based on JavaEE - TomEE or wildfly ?
+
+
 
 ## Features
 + Full stack for industrial projects
@@ -25,6 +33,15 @@ An industrial style multi module maven project
 + DDI - Bootstrap with a minimal DI Framework, to show the potential of this
 + could be used for Workshops / Project Ramp-Up
 + structure to support different persistence technologies
++ Local Selenium Hub via Docker for Linux based tests
++ Mutation Testing
++ CVE Security Report
++ Testbench Tests could be run locally / locally in Selenium Hub / remote Selenium Hub
+
++ local Nexus for clean/compile speedup
++ local Jenkins for Build Tree´s
+
+
 
 ## Questions to solve
 + How to write good Testbench tests to navigate to the component you want to test

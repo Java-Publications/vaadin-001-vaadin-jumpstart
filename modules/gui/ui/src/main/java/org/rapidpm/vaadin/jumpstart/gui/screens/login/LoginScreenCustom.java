@@ -1,6 +1,7 @@
 package org.rapidpm.vaadin.jumpstart.gui.screens.login;
 
 import static java.util.Arrays.asList;
+import java.util.Optional;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -66,8 +67,7 @@ public class LoginScreenCustom extends LoginScreen {
     public void postconstruct() {
 
         cbLanguage.setId(LANGUAGE_COMBO);
-        cbLanguage.setItems(
-            asList(resolve("login.language.en"), resolve("login.language.de")));
+        cbLanguage.setItems(asList(resolve("login.language.en"), resolve("login.language.de")));
 
         cbLanguage.setValue(resolve("login.language.en"));
 
@@ -83,27 +83,20 @@ public class LoginScreenCustom extends LoginScreen {
             final String username = tfUsername.getValue();
             final String password = pfPassword.getValue();
 
-            VaadinSession.getCurrent().setAttribute(LANGUAGE_SESSION_ATTRIBUTE,
-                cbLanguage.getValue());
+            VaadinSession.getCurrent().setAttribute(LANGUAGE_SESSION_ATTRIBUTE, cbLanguage.getValue());
 
-            Case.match(Case.matchCase(() -> Result
-                    .success(loginService.loadUser(username, password))),
-                // Default Case
-                Case.matchCase(username::isEmpty, () -> Result.failure(
-                    resolve("login.failed.description.empty.username"))),
-                Case.matchCase(password::isEmpty, () -> Result.failure(
-                    resolve("login.failed.description.empty.password"))),
-                Case.matchCase(
-                    () -> !loginService.isLoginAllowed(username, password),
-                    () -> Result.failure(resolve("login.failed.description"))))
-                .bind(validateUser -> validateUser.ifPresent(user -> {
-                    getSession().setAttribute(User.class, user);
-                    final MainWindow mainWindow = DI
-                        .activateDI(MainWindow.class);
-                    UI.getCurrent().setContent(mainWindow);
-                }), failedMessage -> Notification
-                    .show(resolve("login.failed"), failedMessage,
-                        Notification.Type.WARNING_MESSAGE));
+            Result<Optional<User>> match = Case
+                .match(
+                    Case.matchCase(() -> Result.success(loginService.loadUser(username, password))),
+                    Case.matchCase(username::isEmpty, () -> Result.failure(resolve("login.failed.description.empty.username"))),
+                    Case.matchCase(password::isEmpty, () -> Result.failure(resolve("login.failed.description.empty.password"))),
+                    Case.matchCase(() -> !loginService.isLoginAllowed(username, password), () -> Result.failure(resolve("login.failed.description"))));
+
+            match.bind(validateUser -> validateUser.ifPresent(user -> {
+                getSession().setAttribute(User.class, user);
+                final MainWindow mainWindow = DI.activateDI(MainWindow.class);
+                UI.getCurrent().setContent(mainWindow);
+            }), failedMessage -> Notification.show(resolve("login.failed"), failedMessage, Notification.Type.WARNING_MESSAGE));
         });
     }
 

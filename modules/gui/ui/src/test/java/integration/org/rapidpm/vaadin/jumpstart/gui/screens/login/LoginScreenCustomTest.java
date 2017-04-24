@@ -1,0 +1,48 @@
+package integration.org.rapidpm.vaadin.jumpstart.gui.screens.login;
+
+import org.junit.Assert;
+import org.junit.Test;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebElement;
+import org.rapidpm.vaadin.jumpstart.gui.screens.login.LoginScreenCustom;
+
+import com.vaadin.testbench.annotations.BrowserFactory;
+import com.vaadin.testbench.annotations.RunOnHub;
+import com.vaadin.testbench.elements.ComboBoxElement;
+import com.vaadin.testbench.elements.VerticalLayoutElement;
+import junit.org.rapidpm.vaadin.jumpstart.gui.BaseUITest;
+
+/**
+ * Created by svenruppert on 23.04.17.
+ */
+
+//@BrowserFactory(VaadinBrowserFactory.class)
+//@RunOnHub()
+public class LoginScreenCustomTest extends BaseUITest {
+
+    // not working on MainLayout so far
+    protected WebElement mainLayout() {
+        return $(VerticalLayoutElement.class).id(LoginScreenCustom.LOGIN_SCREEN);
+    }
+
+    @Test
+    public void test001() throws Exception {
+
+        getElement(LoginScreenCustom.USERNAME_FIELD).sendKeys("admin");
+        getElement(LoginScreenCustom.PASSWORD_FIELD).sendKeys("admin");
+
+        ComboBoxElement comboBoxElement = $(ComboBoxElement.class).id(LoginScreenCustom.LANGUAGE_COMBO);
+        comboBoxElement.openPopup();
+        comboBoxElement.sendKeys(Keys.ARROW_DOWN);
+        comboBoxElement.sendKeys(Keys.ENTER);
+        saveScreenshot("klicked_001");
+
+        Assert.assertEquals(comboBoxElement.getValue(), resolve("login.language.de"));
+
+        getElement(LoginScreenCustom.LOGIN_BUTTON).click();
+
+        final WebElement menubar = mainMenue();
+        Assert.assertNotNull(menubar);
+        Assert.assertTrue(menubar.isDisplayed());
+    }
+}
