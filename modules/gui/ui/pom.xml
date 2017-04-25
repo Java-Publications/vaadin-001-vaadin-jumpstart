@@ -117,10 +117,10 @@
         </dependency>
 
         <!--<dependency>-->
-            <!--<groupId>com.machinepublishers</groupId>-->
-            <!--<artifactId>jbrowserdriver</artifactId>-->
-            <!--<version>0.17.5</version>-->
-            <!--<scope>test</scope>-->
+        <!--<groupId>com.machinepublishers</groupId>-->
+        <!--<artifactId>jbrowserdriver</artifactId>-->
+        <!--<version>0.17.5</version>-->
+        <!--<scope>test</scope>-->
         <!--</dependency>-->
         <!-- Required by TestBench https://github.com/vaadin/testbench/issues/872 -->
         <dependency>
@@ -250,6 +250,101 @@
                 </property>
             </activation>
         </profile>
+
+
+        <profile>
+            <id>docker</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>io.fabric8</groupId>
+                        <artifactId>docker-maven-plugin</artifactId>
+                        <configuration>
+                            <autoPull>on</autoPull>
+                            <startParallel>false</startParallel>
+                            <images>
+                                <image>
+                                    <name>selenium/hub</name>
+                                    <alias>selenium-hub</alias>
+                                    <run>
+                                        <ports>
+                                            <port>4444:4444</port>
+                                        </ports>
+                                    </run>
+                                </image>
+                                <image>
+                                    <name>selenium/node-chrome</name>
+                                    <alias>selenium-node-chrome</alias>
+                                    <run>
+                                        <links>
+                                            <link>selenium-hub:hub</link>
+                                        </links>
+                                        <dependsOn>
+                                            <container>selenium-hub</container>
+                                        </dependsOn>
+                                    </run>
+                                </image>
+                                <image>
+                                    <name>selenium/node-phantomjs</name>
+                                    <alias>selenium-node-phantomjs</alias>
+                                    <run>
+                                        <links>
+                                            <link>selenium-hub:hub</link>
+                                        </links>
+                                        <dependsOn>
+                                            <container>selenium-hub</container>
+                                        </dependsOn>
+                                    </run>
+                                </image>
+                                <image>
+                                    <name>selenium/node-firefox</name>
+                                    <alias>selenium-node-firefox</alias>
+                                    <run>
+                                        <links>
+                                            <link>selenium-hub:hub</link>
+                                        </links>
+                                        <dependsOn>
+                                            <container>selenium-hub</container>
+                                        </dependsOn>
+                                    </run>
+                                </image>
+                            </images>
+                        </configuration>
+                        <executions>
+                            <!--<execution>-->
+                                <!--<id>docker:start</id>-->
+                                <!--<phase>install</phase>-->
+                                <!--<goals>-->
+                                    <!--<goal>start</goal>-->
+                                <!--</goals>-->
+                            <!--</execution>-->
+                            <execution>
+                                <id>docker:start</id>
+                                <phase>compile</phase>
+                                <goals>
+                                    <!-- "build" should be used to create the images with the
+                                         artifact -->
+                                    <!--<goal>build</goal>-->
+                                    <goal>start</goal>
+                                </goals>
+                            </execution>
+                            <execution>
+                                <id>docker:stop</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>stop</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+
     </profiles>
 
 
