@@ -1,9 +1,7 @@
 package junit.org.rapidpm.vaadin.jumpstart.gui;
 
 import static java.util.Optional.of;
-import static junit.org.rapidpm.vaadin.jumpstart.gui.Context.browserTypeSupplier;
 import static junit.org.rapidpm.vaadin.jumpstart.gui.Context.chooseLocale;
-import static junit.org.rapidpm.vaadin.jumpstart.gui.Context.chooseSelenium;
 import static org.rapidpm.frp.matcher.Case.match;
 import static org.rapidpm.frp.matcher.Case.matchCase;
 import static org.rapidpm.frp.model.Result.success;
@@ -29,13 +27,13 @@ import com.vaadin.testbench.TestBench;
 /**
  * Created by svenruppert on 23.04.17.
  */
-public class BrowserDriverSupplier implements Supplier<Result<Optional<WebDriver>>> {
+public interface BrowserDriverSupplier /*extends Supplier<Result<Optional<WebDriver>>> */ {
 
     public static final String VAADIN_TESTBENCH_DRIVER_PROPERTY = "vaadin.testbench.driver";
 
     public static final String DATA_DRIVER_BASE_FOLDER = "/_data/driver/";
 
-    private static final Function<String, Result<Optional<WebDriver>>> webdriver = browserType -> match(
+    public static final Function<String, Result<Optional<WebDriver>>> webdriver = browserType -> match(
         matchCase(() -> success(of(new PhantomJSDriver()))),
         //            Case.matchCase(() -> browserType == null, () -> Result.failure("browserTape should not be null")),
         matchCase(browserType::isEmpty, () -> Result.failure("browserTape should not be emtpy")),
@@ -44,7 +42,7 @@ public class BrowserDriverSupplier implements Supplier<Result<Optional<WebDriver
         matchCase(() -> browserType.equals(BrowserType.CHROME), () -> success(of(new ChromeDriver()))),
         matchCase(() -> browserType.equals(BrowserType.IE), () -> success(of(new InternetExplorerDriver()))));
 
-    private static final Function<String, Result<Optional<DesiredCapabilities>>> desiredCapabilities = (browsertype) -> match(
+    public static final Function<String, Result<Optional<DesiredCapabilities>>> desiredCapabilities = (browsertype) -> match(
         matchCase(() -> success(of(DesiredCapabilities.phantomjs()))),
         //            Case.matchCase(() -> browsertype == null, () -> Result.failure("browsertype should not be null")),
         matchCase(browsertype::isEmpty, () -> Result.failure("browsertype should not be empty")),
@@ -54,7 +52,7 @@ public class BrowserDriverSupplier implements Supplier<Result<Optional<WebDriver
         matchCase(() -> browsertype.equals(BrowserType.IE), () -> success(of(DesiredCapabilities.internetExplorer()))));
 
     // transform to curried function
-    public Result<Optional<WebDriver>> get() {
+    default Result<Optional<WebDriver>> get(Supplier<String> browserTypeSupplier, Supplier<Boolean> chooseSelenium) {
         return match(
             matchCase(() -> {
                 initSystemProperties(); //
@@ -83,7 +81,7 @@ public class BrowserDriverSupplier implements Supplier<Result<Optional<WebDriver
             }));
     }
 
-    private void initSystemProperties() {
+    public static void initSystemProperties() {
         final String pointToStartFrom = new File("").getAbsolutePath();
         final String OS = "osx";
         String basePath = pointToStartFrom + DATA_DRIVER_BASE_FOLDER + OS;

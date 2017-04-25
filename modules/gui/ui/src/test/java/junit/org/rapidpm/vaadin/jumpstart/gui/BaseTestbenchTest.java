@@ -11,12 +11,17 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Rule;
+import org.junit.Test;
 import org.junit.rules.TestName;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
@@ -26,6 +31,7 @@ import org.openqa.selenium.remote.BrowserType;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.rapidpm.ddi.DI;
 import org.rapidpm.frp.matcher.Case;
+import org.rapidpm.frp.model.Pair;
 import org.rapidpm.frp.model.Result;
 import org.rapidpm.microservice.Main;
 
@@ -37,6 +43,8 @@ import com.vaadin.testbench.TestBenchTestCase;
 /**
  * Created by svenruppert on 07.04.17.
  */
+
+@RunWith(value = Parameterized.class)
 public class BaseTestbenchTest extends TestBenchTestCase {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(BaseTestbenchTest.class);
@@ -48,6 +56,29 @@ public class BaseTestbenchTest extends TestBenchTestCase {
         new MicroserviceTestUtils().setUpMicroserviceProperties();
     }
 
+    @Test
+    public void doNothing() throws Exception {
+        Assert.assertTrue(true);
+    }
+
+    @Parameterized.Parameter
+    public Pair<Boolean, String> datapair;
+
+    //Single parameter, use Object[]
+    @Parameterized.Parameters(name = "{index}: testPair - {0}")
+    public static Object[] data() {
+        return Context.streamOfPair
+            .get()
+            .map(p -> new Pair<>(p.getT1().get(), p.getT2().get()))
+            .collect(Collectors.toList())
+            .toArray();
+//        return new Object[]{
+//            "google.com",
+//            "mkyong.com",
+//            "twitter.com"
+//        };
+    }
+
     @Before
     public void setUpBase()
         throws Exception {
@@ -55,15 +86,15 @@ public class BaseTestbenchTest extends TestBenchTestCase {
         DI.activatePackages("org.rapidpm");
         DI.activatePackages(this.getClass());
         DI.activateDI(this);
+//        Main.stop();
         Main.deploy();
         setUpTestbench();
         saveScreenshot("001_before");
     }
 
     public void setUpTestbench() throws Exception {
-
-        new BrowserDriverSupplier()
-            .get()
+        new BrowserDriverSupplier(){}
+            .get(()->datapair.getT2(), ()->datapair.getT1())
             .ifPresent(w -> w.ifPresent(this::setDriver));
         getDriver().get(baseURL() + "?restartApplication");
         if (getDriver() instanceof PhantomJSDriver) {

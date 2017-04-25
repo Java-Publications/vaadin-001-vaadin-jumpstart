@@ -36,18 +36,18 @@ public interface Context {
         return new Pair<>(a, b);
     }
 
-    Stream<Pair<Supplier<Boolean>, Supplier<String>>> streamOfPair = Stream
+    Supplier<Stream<Pair<Supplier<Boolean>, Supplier<String>>>> streamOfPair = () -> Stream
         .of(nextPair(() -> true, () -> BrowserType.FIREFOX),
             nextPair(() -> true, () -> BrowserType.CHROME),
-            nextPair(() -> true, () -> BrowserType.PHANTOMJS),
-            nextPair(() -> false, () -> BrowserType.FIREFOX),
+//            nextPair(() -> true, () -> BrowserType.PHANTOMJS),
+//            nextPair(() -> false, () -> BrowserType.FIREFOX),
             nextPair(() -> false, () -> BrowserType.CHROME),
             nextPair(() -> false, () -> BrowserType.PHANTOMJS));
     //
 
     //working config
-    Supplier<Boolean> chooseSelenium = () -> true;
-    Supplier<String> browserTypeSupplier = () -> BrowserType.FIREFOX;
+//    Supplier<Boolean> chooseSelenium = () -> true;
+//    Supplier<String> browserTypeSupplier = () -> BrowserType.FIREFOX;
 
     Supplier<Boolean> chooseLocale = () -> true;
     Supplier<Platform> platformSupplier = () -> Platform.LINUX;

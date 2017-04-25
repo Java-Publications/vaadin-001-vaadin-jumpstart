@@ -2,6 +2,8 @@ package junit.org.rapidpm.vaadin.jumpstart.gui;
 
 import javax.inject.Inject;
 
+import org.junit.Assert;
+import org.junit.Test;
 import org.openqa.selenium.WebElement;
 import org.rapidpm.vaadin.jumpstart.gui.basics.MainWindowImpl;
 import org.rapidpm.vaadin.jumpstart.gui.menubar.RapidMenuBar;
@@ -18,6 +20,13 @@ import com.vaadin.testbench.elements.VerticalLayoutElement;
  * Created by svenruppert on 07.04.17.
  */
 public class BaseUITest extends BaseTestbenchTest {
+
+
+    @Test
+    public void doNothing() throws Exception {
+        Assert.assertTrue(true);
+    }
+
 
     @Inject public PropertyService propertyService;
 
