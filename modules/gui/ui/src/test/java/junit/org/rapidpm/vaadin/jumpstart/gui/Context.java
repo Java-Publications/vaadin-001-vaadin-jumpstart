@@ -32,8 +32,8 @@ public interface Context {
     //    Supplier<String> browserTypeSupplier = () -> BrowserType.PHANTOMJS;
 
 
-    static Pair<Supplier<Boolean>, Supplier<String>> nextPair(Supplier<Boolean> b, Supplier<String> s) {
-        return new Pair<>(b, s);
+    static <T1,T2> Pair<T1, T2> nextPair(T1 a, T2 b) {
+        return new Pair<>(a, b);
     }
 
     Stream<Pair<Supplier<Boolean>, Supplier<String>>> streamOfPair = Stream

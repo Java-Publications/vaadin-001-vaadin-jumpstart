@@ -76,13 +76,10 @@ Later I will show, how to push the webapp into the Docker cluster, too.
 + Add JavaFX Browser for concurrent Headless Tests
 + maven target to download needed Browser-Driver
 + jooq / flyway for SQL
-+ speedment integration 
++ speedment integration (Streams)
 + Show the full DI Stack on localhost ( gitbucket/nexus/jenkins )
 + build the same with gradle
 + bootstrap with CDI (weld)
-
-
-
 
 ## Scenario
 In this scenario we are in the world of ..  

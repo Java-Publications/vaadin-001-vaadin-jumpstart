@@ -14,7 +14,6 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-import org.openqa.selenium.Platform;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -45,10 +44,9 @@ public class BrowserDriverSupplier implements Supplier<Result<Optional<WebDriver
         matchCase(() -> browserType.equals(BrowserType.CHROME), () -> success(of(new ChromeDriver()))),
         matchCase(() -> browserType.equals(BrowserType.IE), () -> success(of(new InternetExplorerDriver()))));
 
-
     private static final Function<String, Result<Optional<DesiredCapabilities>>> desiredCapabilities = (browsertype) -> match(
         matchCase(() -> success(of(DesiredCapabilities.phantomjs()))),
-//            Case.matchCase(() -> browsertype == null, () -> Result.failure("browsertype should not be null")),
+        //            Case.matchCase(() -> browsertype == null, () -> Result.failure("browsertype should not be null")),
         matchCase(browsertype::isEmpty, () -> Result.failure("browsertype should not be empty")),
         matchCase(() -> browsertype.equals(BrowserType.PHANTOMJS), () -> success(of(DesiredCapabilities.phantomjs()))),
         matchCase(() -> browsertype.equals(BrowserType.FIREFOX), () -> success(of(DesiredCapabilities.firefox()))),
@@ -70,18 +68,18 @@ public class BrowserDriverSupplier implements Supplier<Result<Optional<WebDriver
                     error -> System.out.println("error to log = " + error));
 
                 return match(matchCase(() -> {
-                        final DesiredCapabilities desiredCapabilities = capabilities.get().get();
-                        try {
-                            final URL url = new URL("http://" + Context.ipSupplier.get() + ":4444/wd/hub");
-                            final RemoteWebDriver remoteWebDriver = new RemoteWebDriver(url, desiredCapabilities);
-                            final WebDriver webDriver = TestBench.createDriver(remoteWebDriver);
-                            return success(of(webDriver));
-                        } catch (MalformedURLException e) {
-                            return Result.failure("url not correct " + e.getMessage());
-                        }
-                    }),
-                    matchCase(() -> !capabilities.isPresent(), () -> Result.failure("capabilities are absent")),
-                    matchCase(() -> capabilities.isPresent() && !capabilities.get().isPresent(), () -> Result.failure("capabilities are absent")));
+                                 final DesiredCapabilities desiredCapabilities = capabilities.get().get();
+                                 try {
+                                     final URL url = new URL("http://" + Context.ipSupplier.get() + ":4444/wd/hub");
+                                     final RemoteWebDriver remoteWebDriver = new RemoteWebDriver(url, desiredCapabilities);
+                                     final WebDriver webDriver = TestBench.createDriver(remoteWebDriver);
+                                     return success(of(webDriver));
+                                 } catch (MalformedURLException e) {
+                                     return Result.failure("url not correct " + e.getMessage());
+                                 }
+                             }),
+                             matchCase(() -> !capabilities.isPresent(), () -> Result.failure("capabilities are absent")),
+                             matchCase(() -> capabilities.isPresent() && !capabilities.get().isPresent(), () -> Result.failure("capabilities are absent")));
             }));
     }
 
