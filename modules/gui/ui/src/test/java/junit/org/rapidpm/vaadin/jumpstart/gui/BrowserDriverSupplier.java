@@ -1,17 +1,15 @@
 package junit.org.rapidpm.vaadin.jumpstart.gui;
 
-import static java.util.Optional.of;
-import static junit.org.rapidpm.vaadin.jumpstart.gui.Context.chooseLocale;
 import static org.rapidpm.frp.matcher.Case.match;
 import static org.rapidpm.frp.matcher.Case.matchCase;
 import static org.rapidpm.frp.model.Result.success;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
+import org.openqa.selenium.Platform;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -20,6 +18,7 @@ import org.openqa.selenium.phantomjs.PhantomJSDriver;
 import org.openqa.selenium.remote.BrowserType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import org.rapidpm.frp.functions.QuadFunction;
 import org.rapidpm.frp.model.Result;
 
 import com.vaadin.testbench.TestBench;
@@ -29,57 +28,56 @@ import com.vaadin.testbench.TestBench;
  */
 public interface BrowserDriverSupplier /*extends Supplier<Result<Optional<WebDriver>>> */ {
 
-    public static final String VAADIN_TESTBENCH_DRIVER_PROPERTY = "vaadin.testbench.driver";
+    //    public static final String VAADIN_TESTBENCH_DRIVER_PROPERTY = "vaadin.testbench.driver";
 
-    public static final String DATA_DRIVER_BASE_FOLDER = "/_data/driver/";
-
-    public static final Function<String, Result<Optional<WebDriver>>> webdriver = browserType -> match(
-        matchCase(() -> success(of(new PhantomJSDriver()))),
+    Function<String, Result<WebDriver>> webdriver = browserType -> match(
+        matchCase(() -> success(new PhantomJSDriver())),
         //            Case.matchCase(() -> browserType == null, () -> Result.failure("browserTape should not be null")),
         matchCase(browserType::isEmpty, () -> Result.failure("browserTape should not be emtpy")),
-        matchCase(() -> browserType.equals(BrowserType.PHANTOMJS), () -> success(of(new PhantomJSDriver()))),
-        matchCase(() -> browserType.equals(BrowserType.FIREFOX), () -> success(of(new FirefoxDriver()))),
-        matchCase(() -> browserType.equals(BrowserType.CHROME), () -> success(of(new ChromeDriver()))),
-        matchCase(() -> browserType.equals(BrowserType.IE), () -> success(of(new InternetExplorerDriver()))));
+        matchCase(() -> browserType.equals(BrowserType.PHANTOMJS), () -> success(new PhantomJSDriver())),
+        matchCase(() -> browserType.equals(BrowserType.FIREFOX), () -> success(new FirefoxDriver())),
+        matchCase(() -> browserType.equals(BrowserType.CHROME), () -> success(new ChromeDriver())),
+        matchCase(() -> browserType.equals(BrowserType.IE), () -> success(new InternetExplorerDriver())));
 
-    public static final Function<String, Result<Optional<DesiredCapabilities>>> desiredCapabilities = (browsertype) -> match(
-        matchCase(() -> success(of(DesiredCapabilities.phantomjs()))),
+    Function<String, Result<DesiredCapabilities>> desiredCapabilities = (browsertype) -> match(
+        matchCase(() -> success(DesiredCapabilities.phantomjs())),
         //            Case.matchCase(() -> browsertype == null, () -> Result.failure("browsertype should not be null")),
         matchCase(browsertype::isEmpty, () -> Result.failure("browsertype should not be empty")),
-        matchCase(() -> browsertype.equals(BrowserType.PHANTOMJS), () -> success(of(DesiredCapabilities.phantomjs()))),
-        matchCase(() -> browsertype.equals(BrowserType.FIREFOX), () -> success(of(DesiredCapabilities.firefox()))),
-        matchCase(() -> browsertype.equals(BrowserType.CHROME), () -> success(of(DesiredCapabilities.chrome()))),
-        matchCase(() -> browsertype.equals(BrowserType.IE), () -> success(of(DesiredCapabilities.internetExplorer()))));
+        matchCase(() -> browsertype.equals(BrowserType.PHANTOMJS), () -> success(DesiredCapabilities.phantomjs())),
+        matchCase(() -> browsertype.equals(BrowserType.FIREFOX), () -> success(DesiredCapabilities.firefox())),
+        matchCase(() -> browsertype.equals(BrowserType.CHROME), () -> success(DesiredCapabilities.chrome())),
+        matchCase(() -> browsertype.equals(BrowserType.IE), () -> success(DesiredCapabilities.internetExplorer())));
 
-    // transform to curried function
-    default Result<Optional<WebDriver>> get(Supplier<String> browserTypeSupplier, Supplier<Boolean> chooseSelenium) {
-        return match(
+    QuadFunction<Supplier<String>, Supplier<Platform>, Supplier<Boolean>, Supplier<String>, Result<WebDriver>> webDriver
+        = (browserType, platform, runningLocal, seleniumHubIP) ->
+        match(
             matchCase(() -> {
                 initSystemProperties(); //
-                return webdriver.apply(browserTypeSupplier.get());
+                return webdriver.apply(browserType.get());
             }),
-            matchCase(() -> !chooseLocale.get() && !chooseSelenium.get(), () -> Result.failure("remote but not selenium is not supported")),
-            matchCase(chooseSelenium::get, () -> {
-                final Result<Optional<DesiredCapabilities>> capabilities = desiredCapabilities.apply(browserTypeSupplier.get());
+//            matchCase(() -> runningLocal.get() , () -> Result.failure("remote MicroService not supported until now")),
+            matchCase( ()-> !runningLocal.get(), () -> {
+                final Result<DesiredCapabilities> capabilities = desiredCapabilities.apply(browserType.get());
                 capabilities.bind(
-                    success -> success.ifPresent((c) -> c.setPlatform(Context.platformSupplier.get())),
+                    success -> success.setPlatform(platform.get()),
                     error -> System.out.println("error to log = " + error));
 
                 return match(matchCase(() -> {
-                                 final DesiredCapabilities desiredCapabilities = capabilities.get().get();
+                                 final DesiredCapabilities desiredCapabilities = capabilities.get();
                                  try {
-                                     final URL url = new URL("http://" + Context.ipSupplier.get() + ":4444/wd/hub");
+                                     final URL url = new URL("http://" + seleniumHubIP.get() + ":4444/wd/hub");
                                      final RemoteWebDriver remoteWebDriver = new RemoteWebDriver(url, desiredCapabilities);
                                      final WebDriver webDriver = TestBench.createDriver(remoteWebDriver);
-                                     return success(of(webDriver));
+                                     return success(webDriver);
                                  } catch (MalformedURLException e) {
                                      return Result.failure("url not correct " + e.getMessage());
                                  }
                              }),
-                             matchCase(() -> !capabilities.isPresent(), () -> Result.failure("capabilities are absent")),
-                             matchCase(() -> capabilities.isPresent() && !capabilities.get().isPresent(), () -> Result.failure("capabilities are absent")));
+                             matchCase(() -> !capabilities.isPresent(), () -> Result.failure("capabilities are absent")));
             }));
-    }
+
+    // for local driver - maven plugin for download ???
+    public static final String DATA_DRIVER_BASE_FOLDER = "/_data/driver/";
 
     public static void initSystemProperties() {
         final String pointToStartFrom = new File("").getAbsolutePath();

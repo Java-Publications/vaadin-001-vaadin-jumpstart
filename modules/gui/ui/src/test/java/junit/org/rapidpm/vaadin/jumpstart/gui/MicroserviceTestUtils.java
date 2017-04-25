@@ -13,8 +13,8 @@ public class MicroserviceTestUtils {
     public void setUpMicroserviceProperties() {
         final PortUtils portUtils = new PortUtils();
 
-        System.setProperty(MainUndertow.REST_HOST_PROPERTY, Context.ipSupplier.get());
-        System.setProperty(MainUndertow.SERVLET_HOST_PROPERTY, Context.ipSupplier.get());
+        System.setProperty(MainUndertow.REST_HOST_PROPERTY, Context.ipSupplierLocalIP.get());
+        System.setProperty(MainUndertow.SERVLET_HOST_PROPERTY, Context.ipSupplierLocalIP.get());
 
         System.setProperty(MainUndertow.REST_PORT_PROPERTY, portUtils.nextFreePortForTest() + "");
         System.setProperty(MainUndertow.SERVLET_PORT_PROPERTY, portUtils.nextFreePortForTest() + "");

@@ -1,5 +1,6 @@
 package junit.org.rapidpm.vaadin.jumpstart.gui;
 
+import static junit.org.rapidpm.vaadin.jumpstart.gui.BrowserDriverSupplier.webDriver;
 import static org.rapidpm.frp.matcher.Case.match;
 import static org.rapidpm.frp.matcher.Case.matchCase;
 import static org.rapidpm.frp.model.Result.success;
@@ -24,6 +25,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.OutputType;
+import org.openqa.selenium.Platform;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.phantomjs.PhantomJSDriver;
@@ -32,6 +34,7 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import org.rapidpm.ddi.DI;
 import org.rapidpm.frp.matcher.Case;
 import org.rapidpm.frp.model.Pair;
+import org.rapidpm.frp.model.Quad;
 import org.rapidpm.frp.model.Result;
 import org.rapidpm.microservice.Main;
 
@@ -62,21 +65,20 @@ public class BaseTestbenchTest extends TestBenchTestCase {
     }
 
     @Parameterized.Parameter
-    public Pair<Boolean, String> datapair;
+    //browserType, platform, runningLocal, seleniumHubIP
+    public Quad<
+        Supplier<String>,
+        Supplier<Platform>,
+        Supplier<Boolean>,
+        Supplier<String>> dataConfig;
 
     //Single parameter, use Object[]
     @Parameterized.Parameters(name = "{index}: testPair - {0}")
     public static Object[] data() {
-        return Context.streamOfPair
+        return Context.streamOfConfig
             .get()
-            .map(p -> new Pair<>(p.getT1().get(), p.getT2().get()))
             .collect(Collectors.toList())
             .toArray();
-//        return new Object[]{
-//            "google.com",
-//            "mkyong.com",
-//            "twitter.com"
-//        };
     }
 
     @Before
@@ -86,17 +88,23 @@ public class BaseTestbenchTest extends TestBenchTestCase {
         DI.activatePackages("org.rapidpm");
         DI.activatePackages(this.getClass());
         DI.activateDI(this);
-//        Main.stop();
+        Main.stop();
         Main.deploy();
         setUpTestbench();
         saveScreenshot("001_before");
     }
 
     public void setUpTestbench() throws Exception {
-        new BrowserDriverSupplier(){}
-            .get(()->datapair.getT2(), ()->datapair.getT1())
-            .ifPresent(w -> w.ifPresent(this::setDriver));
+
+        LOGGER.info("Running Config " + dataConfig.getT1() + " " + dataConfig.getT2() + " " + dataConfig.getT3() + " " + dataConfig.getT4());
+
+        //browserType, platform, runningLocal, seleniumHubIP
+        webDriver
+            .apply(dataConfig.getT1(), dataConfig.getT2(), dataConfig.getT3(), dataConfig.getT4())
+            .ifPresent(this::setDriver);
+
         getDriver().get(baseURL() + "?restartApplication");
+
         if (getDriver() instanceof PhantomJSDriver) {
             final Capabilities remoteWebDriverCapabilities = ((RemoteWebDriver) getDriver()).getCapabilities();
             if (remoteWebDriverCapabilities != null)
@@ -156,7 +164,7 @@ public class BaseTestbenchTest extends TestBenchTestCase {
     public String baseURL() {
         final String key = SERVLET_PORT_PROPERTY;
         final String actualUsedServletPort = System.getProperty(key) == null ? DEFAULT_SERVLET_PORT + "" : System.getProperty(key);
-        return "http://"+Context.ipSupplier.get()+":" + actualUsedServletPort + "/" + MYAPP;
+        return "http://" + Context.ipSupplierLocalIP.get() + ":" + actualUsedServletPort + "/" + MYAPP;
     }
 
 }

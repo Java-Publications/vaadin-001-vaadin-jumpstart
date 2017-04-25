@@ -15,54 +15,14 @@ import org.openqa.selenium.Platform;
 import org.openqa.selenium.remote.BrowserType;
 import org.rapidpm.frp.Transformations;
 import org.rapidpm.frp.functions.CheckedSupplier;
-import org.rapidpm.frp.model.Pair;
+import org.rapidpm.frp.model.Quad;
 
 /**
  * Created by svenruppert on 24.04.17.
  */
 public interface Context {
 
-    // non running configs
-    //    Supplier<Boolean> chooseSelenium = () -> false;
-    //    Supplier<String> browserTypeSupplier = () -> BrowserType.FIREFOX;
-
-    // org.openqa.selenium.SessionNotCreatedException: Unable to create new remote session.
-    // desired capabilities = Capabilities [{browserName=phantomjs, version=, platform=LINUX}], required capabilities = Capabilities [{}]
-    //    Supplier<Boolean> chooseSelenium = () -> true;
-    //    Supplier<String> browserTypeSupplier = () -> BrowserType.PHANTOMJS;
-
-
-    static <T1,T2> Pair<T1, T2> nextPair(T1 a, T2 b) {
-        return new Pair<>(a, b);
-    }
-
-    Supplier<Stream<Pair<Supplier<Boolean>, Supplier<String>>>> streamOfPair = () -> Stream
-        .of(nextPair(() -> true, () -> BrowserType.FIREFOX),
-            nextPair(() -> true, () -> BrowserType.CHROME),
-//            nextPair(() -> true, () -> BrowserType.PHANTOMJS),
-//            nextPair(() -> false, () -> BrowserType.FIREFOX),
-            nextPair(() -> false, () -> BrowserType.CHROME),
-            nextPair(() -> false, () -> BrowserType.PHANTOMJS));
-    //
-
-    //working config
-//    Supplier<Boolean> chooseSelenium = () -> true;
-//    Supplier<String> browserTypeSupplier = () -> BrowserType.FIREFOX;
-
-    Supplier<Boolean> chooseLocale = () -> true;
-    Supplier<Platform> platformSupplier = () -> Platform.LINUX;
-
-    //    Supplier<String> ipSupplier = () -> "localhost";
-    //    Supplier<String> ipSupplier = () -> "192.168.2.47";
-    //    Supplier<String> ipSupplier = () -> "10.64.12.132"; external HUB IP to play with
-
-    Supplier<String> ipSupplier = () -> {
-        /*
-        127.xxx.xxx.xxx
-        169.254.xxx.xxx
-        224.xxx.xxx.xxx - 239.xxx.xxx.xxx
-        255.255.255.255
-         */
+    Supplier<String> ipSupplierLocalIP = () -> {
         final CheckedSupplier<Enumeration<NetworkInterface>> checkedSupplier = NetworkInterface::getNetworkInterfaces;
 
         return Transformations.<NetworkInterface>enumToStream()
@@ -82,5 +42,55 @@ public interface Context {
             .findFirst().orElse("localhost");
     };
 
+    // IP Vaadin Selenium Hub  http://tb3-hub.intra.itmill.com/
+
+    Supplier<Platform> platformLinux = () -> Platform.LINUX;
+    Supplier<Platform> platformWindows = () -> Platform.WINDOWS;
+
+    Supplier<String> browserFireFox = () -> BrowserType.FIREFOX;
+    Supplier<String> browserChrome = () -> BrowserType.CHROME;
+    Supplier<String> browserPhantomJS = () -> BrowserType.PHANTOMJS;
+
+    Supplier<String> localHost = ipSupplierLocalIP;
+    Supplier<String> seleniumHubLocal = ipSupplierLocalIP;
+    Supplier<String> seleniumHubVaadin = () -> "tb3-hub.intra.itmill.com";
+
+    Supplier<Boolean> runningLocalBrowser = () -> Boolean.TRUE; // on local installed Browser
+    Supplier<Boolean> runningSeleniumHub = () -> Boolean.FALSE; // inside SeleniumHub
+
+    static <T1, T2, T3, T4> Quad<T1, T2, T3, T4> nextQuad(T1 a, T2 b, T3 c, T4 d) {
+        return new Quad<>(a, b, c, d);
+    }
+
+    //browserType, platform, runningLocal, seleniumHubIP
+    Supplier<
+        Stream<
+            Quad<
+                Supplier<String>,
+                Supplier<Platform>,
+                Supplier<Boolean>,
+                Supplier<String>>>> streamOfConfig = () ->
+        Stream.of(
+            nextQuad(browserChrome, platformLinux, runningLocalBrowser, localHost),
+            nextQuad(browserFireFox, platformLinux, runningLocalBrowser, localHost),
+            nextQuad(browserPhantomJS, platformLinux, runningLocalBrowser, localHost),
+
+            nextQuad(browserChrome, platformLinux, runningSeleniumHub, seleniumHubLocal),
+            nextQuad(browserFireFox, platformLinux, runningSeleniumHub, seleniumHubLocal),
+            nextQuad(browserPhantomJS, platformLinux, runningSeleniumHub, seleniumHubLocal),
+
+            nextQuad(browserChrome, platformLinux, runningSeleniumHub, seleniumHubVaadin),
+            nextQuad(browserFireFox, platformLinux, runningSeleniumHub, seleniumHubVaadin),
+            nextQuad(browserPhantomJS, platformLinux, runningSeleniumHub, seleniumHubVaadin),
+
+
+            nextQuad(browserChrome, platformWindows, runningSeleniumHub, seleniumHubVaadin), // exception
+            nextQuad(browserFireFox, platformWindows, runningSeleniumHub, seleniumHubVaadin), // exception
+            nextQuad(browserPhantomJS, platformWindows, runningSeleniumHub, seleniumHubVaadin)
+
+//            nextQuad(browserChrome, platformWindows, runningSeleniumHub, seleniumHubVaadin),// exception test002
+//            nextQuad(browserFireFox, platformWindows, runningSeleniumHub, seleniumHubVaadin), // exception
+//            nextQuad(browserPhantomJS, platformWindows, runningSeleniumHub, seleniumHubVaadin)// exception
+        );
 }
 
