@@ -1,6 +1,9 @@
 package org.rapidpm.vaadin.jumpstart.gui.screens.login;
 
 import static java.util.Arrays.asList;
+import static org.rapidpm.frp.matcher.Case.matchCase;
+import static org.rapidpm.frp.model.Result.failure;
+import static org.rapidpm.frp.model.Result.success;
 import java.util.Optional;
 
 import javax.annotation.PostConstruct;
@@ -87,10 +90,10 @@ public class LoginScreenCustom extends LoginScreen {
 
             Result<Optional<User>> match = Case
                 .match(
-                    Case.matchCase(() -> Result.success(loginService.loadUser(username, password))),
-                    Case.matchCase(username::isEmpty, () -> Result.failure(resolve("login.failed.description.empty.username"))),
-                    Case.matchCase(password::isEmpty, () -> Result.failure(resolve("login.failed.description.empty.password"))),
-                    Case.matchCase(() -> !loginService.isLoginAllowed(username, password), () -> Result.failure(resolve("login.failed.description"))));
+                    matchCase(() -> success(loginService.loadUser(username, password))),
+                    matchCase(username::isEmpty, () -> failure(resolve("login.failed.description.empty.username"))),
+                    matchCase(password::isEmpty, () -> failure(resolve("login.failed.description.empty.password"))),
+                    matchCase(() -> !loginService.isLoginAllowed(username, password), () -> failure(resolve("login.failed.description"))));
 
             match.bind(validateUser -> validateUser.ifPresent(user -> {
                 getSession().setAttribute(User.class, user);

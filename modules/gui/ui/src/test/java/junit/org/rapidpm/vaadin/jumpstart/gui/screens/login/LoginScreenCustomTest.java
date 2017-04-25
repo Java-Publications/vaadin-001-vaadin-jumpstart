@@ -27,7 +27,6 @@ public class LoginScreenCustomTest extends BaseUITest {
     @Test
     public void test001()
         throws Exception {
-
         getElement(LoginScreenCustom.USERNAME_FIELD).sendKeys("admin");
         getElement(LoginScreenCustom.PASSWORD_FIELD).sendKeys("admin");
 
@@ -36,7 +35,7 @@ public class LoginScreenCustomTest extends BaseUITest {
         comboBoxElement.openPopup();
         comboBoxElement.sendKeys(Keys.ARROW_DOWN);
         comboBoxElement.sendKeys(Keys.ENTER);
-        saveScreenshot("klicked_001");
+        saveScreenshot("klicked_001"); // only to try
 
         Assert.assertEquals(comboBoxElement.getValue(),
             resolve("login.language.de"));

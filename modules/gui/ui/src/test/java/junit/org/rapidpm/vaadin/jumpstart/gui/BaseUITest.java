@@ -2,7 +2,6 @@ package junit.org.rapidpm.vaadin.jumpstart.gui;
 
 import javax.inject.Inject;
 
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.rapidpm.vaadin.jumpstart.gui.basics.MainWindowImpl;
 import org.rapidpm.vaadin.jumpstart.gui.menubar.RapidMenuBar;
@@ -10,7 +9,9 @@ import org.rapidpm.vaadin.jumpstart.gui.screens.login.LoginScreenCustom;
 import org.rapidpm.vaadin.jumpstart.gui.uilogic.properties.PropertyService;
 
 import com.vaadin.testbench.By;
+import com.vaadin.testbench.elements.ButtonElement;
 import com.vaadin.testbench.elements.ComboBoxElement;
+import com.vaadin.testbench.elements.TextFieldElement;
 import com.vaadin.testbench.elements.VerticalLayoutElement;
 
 /**
@@ -21,18 +22,13 @@ public class BaseUITest extends BaseTestbenchTest {
     @Inject public PropertyService propertyService;
 
     public <T extends BaseTestbenchTest> T loginAsAdmin() {
-        final VerticalLayoutElement loginElement = $(
-            VerticalLayoutElement.class).id(LoginScreenCustom.LOGIN_SCREEN);
-        loginElement.findElement(By.id(LoginScreenCustom.USERNAME_FIELD))
-            .sendKeys("admin");
-        loginElement.findElement(By.id(LoginScreenCustom.PASSWORD_FIELD))
-            .sendKeys("admin");
-        ComboBoxElement comboBoxElement = $(ComboBoxElement.class)
-            .id(LoginScreenCustom.LANGUAGE_COMBO);
-        comboBoxElement.openPopup();
-        comboBoxElement.sendKeys(Keys.ARROW_DOWN);
-        comboBoxElement.sendKeys(Keys.ENTER);
-        loginElement.findElement(By.id(LoginScreenCustom.LOGIN_BUTTON)).click();
+        final VerticalLayoutElement loginElement = $(VerticalLayoutElement.class).id(LoginScreenCustom.LOGIN_SCREEN);
+
+        $(TextFieldElement.class).id(LoginScreenCustom.USERNAME_FIELD).setValue("admin");
+        $(TextFieldElement.class).id(LoginScreenCustom.PASSWORD_FIELD).setValue("admin");
+        ComboBoxElement comboBoxElement = $(ComboBoxElement.class).id(LoginScreenCustom.LANGUAGE_COMBO);
+        comboBoxElement.selectByText(propertyService.resolve("login.language.en"));
+        $(ButtonElement.class).id(LoginScreenCustom.LOGIN_BUTTON).click();
         return (T) this;
     }
 

@@ -25,24 +25,24 @@ public class LoginScreenCustomTest extends BaseUITest {
         return $(VerticalLayoutElement.class).id(LoginScreenCustom.LOGIN_SCREEN);
     }
 
-    @Test
-    public void test001() throws Exception {
-
-        getElement(LoginScreenCustom.USERNAME_FIELD).sendKeys("admin");
-        getElement(LoginScreenCustom.PASSWORD_FIELD).sendKeys("admin");
-
-        ComboBoxElement comboBoxElement = $(ComboBoxElement.class).id(LoginScreenCustom.LANGUAGE_COMBO);
-        comboBoxElement.openPopup();
-        comboBoxElement.sendKeys(Keys.ARROW_DOWN);
-        comboBoxElement.sendKeys(Keys.ENTER);
-        saveScreenshot("klicked_001");
-
-        Assert.assertEquals(comboBoxElement.getValue(), resolve("login.language.de"));
-
-        getElement(LoginScreenCustom.LOGIN_BUTTON).click();
-
-        final WebElement menubar = mainMenue();
-        Assert.assertNotNull(menubar);
-        Assert.assertTrue(menubar.isDisplayed());
-    }
+//    @Test
+//    public void test001() throws Exception {
+//
+//        getElement(LoginScreenCustom.USERNAME_FIELD).sendKeys("admin");
+//        getElement(LoginScreenCustom.PASSWORD_FIELD).sendKeys("admin");
+//
+//        ComboBoxElement comboBoxElement = $(ComboBoxElement.class).id(LoginScreenCustom.LANGUAGE_COMBO);
+//        comboBoxElement.openPopup();
+//        comboBoxElement.sendKeys(Keys.ARROW_DOWN);
+//        comboBoxElement.sendKeys(Keys.ENTER);
+//        saveScreenshot("klicked_001");
+//
+//        Assert.assertEquals(comboBoxElement.getValue(), resolve("login.language.de"));
+//
+//        getElement(LoginScreenCustom.LOGIN_BUTTON).click();
+//
+//        final WebElement menubar = mainMenue();
+//        Assert.assertNotNull(menubar);
+//        Assert.assertTrue(menubar.isDisplayed());
+//    }
 }

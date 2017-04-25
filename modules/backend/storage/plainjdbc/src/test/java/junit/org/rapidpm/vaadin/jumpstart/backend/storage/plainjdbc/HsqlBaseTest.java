@@ -64,7 +64,10 @@ public abstract class HsqlBaseTest {
         throws Exception {
         System.out.println("poolname = " + poolname());
 
-        serverResult = InMemoryHsqldbBuilder.newBuilder().withDbName("testDB").withRandomPort().build();
+        serverResult = InMemoryHsqldbBuilder.newBuilder()
+                                            .withDbName("testDB")
+                                            .withRandomPort()
+                                            .build();
 
         startPoolsAndConnect(poolname(), serverResult.getUrl());
         initSchema(poolname());
