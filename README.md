@@ -16,6 +16,32 @@ An industrial style multi module maven project
 
 + unused import com.vaadin.ui.CustomComponent; created from the designer
 
+## Preparations
+The follwoing things are not automatically managed by initial mvn clean install.
+### install Docker
+To test with the Selenium Hub you need to install Docker on your machine. [Docker Install](https://docs.docker.com/engine/installation/)
+
+If you want to try a few steps before, you could start the Selenium Hub by yourself with
+You could specify the version of the DockerImage if you need it, maybe for legacy projects
+Add for this the version numer ad the end of the command. Here I will show you to address the version 2.53.0
+* docker run -d -p 4444:4444 --name selenium-hub selenium/hub:2.53.0 
+
+I will use the latest
+* docker run -d -p 4444:4444 --name selenium-hub selenium/hub 
+* docker run -d --link selenium-hub:hub selenium/node-chrome
+* docker run -d --link selenium-hub:hub selenium/node-firefox
+* docker run -d --link selenium-hub:hub selenium/node-phantomjs
+
+This commands are installing a local Selenium Hub with Agents for Chrome, FireFox and PhantomJS
+und Linux. If you need Windows, you have to check the section ( comming soon ;-) ) called **Vagrant**.
+
+The Hub will be available under [http://localhost:4444/grid/console](http://localhost:4444/grid/console)
+The Hub is available, the nodes are inside the Docker Cliuster. The Agents are linked to the Hub.
+Every Docker instance could reach your local machine with web requests.
+So, the webapp is running on your host, requests are comming from inside the Docker cluster.
+
+Later I will show, how to push the webapp into the Docker cluster, too.
+
 ## Todos - Infrastructure
 + Add stagemonitor to ui module
 + Gatling with Vaadin ?
