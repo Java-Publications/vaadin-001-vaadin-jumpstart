@@ -61,10 +61,10 @@
             <groupId>com.vaadin</groupId>
             <artifactId>vaadin-server</artifactId>
         </dependency>
-        <dependency>
-            <groupId>com.vaadin</groupId>
-            <artifactId>vaadin-push</artifactId>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>com.vaadin</groupId>-->
+            <!--<artifactId>vaadin-push</artifactId>-->
+        <!--</dependency>-->
 
         <dependency>
             <groupId>com.vaadin</groupId>
@@ -85,6 +85,9 @@
             <artifactId>vaadin-client-compiled</artifactId>
         </dependency>
 
+
+
+
         <dependency>
             <groupId>org.rapidpm.dynamic-cdi</groupId>
             <artifactId>rapidpm-dynamic-cdi-modules-core</artifactId>
@@ -96,6 +99,12 @@
             <artifactId>rapidpm-microservice-modules-core-testutils</artifactId>
             <scope>test</scope>
         </dependency>
+
+        <dependency>
+            <groupId>org.rapidpm</groupId>
+            <artifactId>rapidpm-functional-vaadin-addons</artifactId>
+        </dependency>
+
 
         <dependency>
             <groupId>com.vaadin</groupId>
@@ -312,32 +321,7 @@
                                     </run>
                                 </image>
 
-                                <!--<image>-->
-                                    <!--<alias>microservice</alias>-->
-                                    <!--<name>rapidpm/microservice:${project.version}</name>-->
-                                    <!--<build>-->
-                                        <!--<from>java:8</from>-->
-                                        <!--<assembly>-->
-                                            <!--<descriptorRef>artifact-with-dependencies</descriptorRef>-->
-                                        <!--</assembly>-->
-                                        <!--<cmd>-->
-                                            <!--<shell>java -jar maven/${project.name}-${project.version}.jar</shell>-->
-                                        <!--</cmd>-->
-                                    <!--</build>-->
-                                    <!--<run>-->
-                                        <!--<ports>-->
-                                            <!--<port>7080:7080</port>-->
-                                            <!--<port>7081:7081</port>-->
-                                        <!--</ports>-->
-                                        <!--<links>-->
-                                            <!--<link>selenium-hub:hub</link>-->
-                                        <!--</links>-->
-                                        <!--<dependsOn>-->
-                                            <!--<container>selenium-hub</container>-->
-                                        <!--</dependsOn>-->
-                                    <!--</run>-->
 
-                                <!--</image>-->
                             </images>
                         </configuration>
                         <executions>

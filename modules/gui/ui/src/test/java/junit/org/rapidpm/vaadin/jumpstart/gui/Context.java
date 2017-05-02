@@ -1,20 +1,11 @@
 package junit.org.rapidpm.vaadin.jumpstart.gui;
 
-import static org.rapidpm.frp.StringFunctions.notEmpty;
-import static org.rapidpm.frp.StringFunctions.notStartsWith;
-import static org.rapidpm.frp.Transformations.not;
-import java.net.Inet4Address;
-import java.net.InetAddress;
-import java.net.NetworkInterface;
-import java.util.Collections;
-import java.util.Enumeration;
+import static org.rapidpm.frp.vaadin.addon.testbench.BrowserDriverFunctions.ipSupplierLocalIP;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 import org.openqa.selenium.Platform;
 import org.openqa.selenium.remote.BrowserType;
-import org.rapidpm.frp.Transformations;
-import org.rapidpm.frp.functions.CheckedSupplier;
 import org.rapidpm.frp.model.Quad;
 
 /**
@@ -22,34 +13,16 @@ import org.rapidpm.frp.model.Quad;
  */
 public interface Context {
 
-    Supplier<String> ipSupplierLocalIP = () -> {
-        final CheckedSupplier<Enumeration<NetworkInterface>> checkedSupplier = NetworkInterface::getNetworkInterfaces;
-
-        return Transformations.<NetworkInterface>enumToStream()
-            .apply(checkedSupplier.getOrElse(Collections::emptyEnumeration))
-            .map(NetworkInterface::getInetAddresses)
-            .flatMap(iaEnum -> Transformations.<InetAddress>enumToStream().apply(iaEnum))
-            .filter(inetAddress -> inetAddress instanceof Inet4Address)
-            .filter(not(InetAddress::isMulticastAddress))
-            .map(InetAddress::getHostAddress)
-            .filter(notEmpty())
-            .filter(adr -> notStartsWith().apply(adr, "127"))
-            .filter(adr -> notStartsWith().apply(adr, "169.254"))
-            .filter(adr -> notStartsWith().apply(adr, "255.255.255.255"))
-            .filter(adr -> notStartsWith().apply(adr, "255.255.255.255"))
-            .filter(adr -> notStartsWith().apply(adr, "0.0.0.0"))
-            //            .filter(adr -> range(224, 240).noneMatch(nr -> adr.startsWith(valueOf(nr))))
-            .findFirst().orElse("localhost");
-    };
-
     // IP Vaadin Selenium Hub  http://tb3-hub.intra.itmill.com/
 
     Supplier<Platform> platformLinux = () -> Platform.LINUX;
     Supplier<Platform> platformWindows = () -> Platform.WINDOWS;
+    Supplier<Platform> platformMAC = () -> Platform.MAC;
 
     Supplier<String> browserFireFox = () -> BrowserType.FIREFOX;
     Supplier<String> browserChrome = () -> BrowserType.CHROME;
     Supplier<String> browserPhantomJS = () -> BrowserType.PHANTOMJS;
+    Supplier<String> browserSafarie = () -> BrowserType.SAFARI;
 
     Supplier<String> localHost = ipSupplierLocalIP;
     Supplier<String> seleniumHubLocal = ipSupplierLocalIP;
@@ -71,26 +44,34 @@ public interface Context {
                 Supplier<Boolean>,
                 Supplier<String>>>> streamOfConfig = () ->
         Stream.of(
-            nextQuad(browserChrome, platformLinux, runningLocalBrowser, localHost),
-            nextQuad(browserFireFox, platformLinux, runningLocalBrowser, localHost),
-            nextQuad(browserPhantomJS, platformLinux, runningLocalBrowser, localHost),
+            //            nextQuad(browserFireFox, platformMAC, runningLocalBrowser, localHost),
+            //            nextQuad(browserSafarie, platformMAC, runningLocalBrowser, localHost),
+            //            nextQuad(browserFireFox, platformLinux, runningLocalBrowser, localHost),
+            //            nextQuad(browserSafarie, platformLinux, runningLocalBrowser, localHost),
+            //            nextQuad(browserPhantomJS, platformLinux, runningSeleniumHub, seleniumHubLocal)
 
+            //running - without Vaadin Selenium Hub
+            nextQuad(browserChrome, platformMAC, runningLocalBrowser, localHost),
+            nextQuad(browserPhantomJS, platformMAC, runningLocalBrowser, localHost),
+//
+//            nextQuad(browserChrome, platformLinux, runningLocalBrowser, localHost),
+//            nextQuad(browserPhantomJS, platformLinux, runningLocalBrowser, localHost),
+//
             nextQuad(browserChrome, platformLinux, runningSeleniumHub, seleniumHubLocal),
-            nextQuad(browserFireFox, platformLinux, runningSeleniumHub, seleniumHubLocal),
-            nextQuad(browserPhantomJS, platformLinux, runningSeleniumHub, seleniumHubLocal),
+            nextQuad(browserFireFox, platformLinux, runningSeleniumHub, seleniumHubLocal)
 
-            nextQuad(browserChrome, platformLinux, runningSeleniumHub, seleniumHubVaadin),
-            nextQuad(browserFireFox, platformLinux, runningSeleniumHub, seleniumHubVaadin),
-            nextQuad(browserPhantomJS, platformLinux, runningSeleniumHub, seleniumHubVaadin),
+            // running inside Vaadin Selenium Hub
+//            nextQuad(browserChrome, platformLinux, runningSeleniumHub, seleniumHubVaadin),
+//            nextQuad(browserFireFox, platformLinux, runningSeleniumHub, seleniumHubVaadin),
+//            nextQuad(browserPhantomJS, platformLinux, runningSeleniumHub, seleniumHubVaadin),
 
-
-            nextQuad(browserChrome, platformWindows, runningSeleniumHub, seleniumHubVaadin), // exception
-            nextQuad(browserFireFox, platformWindows, runningSeleniumHub, seleniumHubVaadin), // exception
-            nextQuad(browserPhantomJS, platformWindows, runningSeleniumHub, seleniumHubVaadin)
-
-//            nextQuad(browserChrome, platformWindows, runningSeleniumHub, seleniumHubVaadin),// exception test002
+//            nextQuad(browserChrome, platformWindows, runningSeleniumHub, seleniumHubVaadin), // exception
 //            nextQuad(browserFireFox, platformWindows, runningSeleniumHub, seleniumHubVaadin), // exception
-//            nextQuad(browserPhantomJS, platformWindows, runningSeleniumHub, seleniumHubVaadin)// exception
+//            nextQuad(browserPhantomJS, platformWindows, runningSeleniumHub, seleniumHubVaadin)
+
+            //            nextQuad(browserChrome, platformWindows, runningSeleniumHub, seleniumHubVaadin),// exception test002
+            //            nextQuad(browserFireFox, platformWindows, runningSeleniumHub, seleniumHubVaadin), // exception
+            //            nextQuad(browserPhantomJS, platformWindows, runningSeleniumHub, seleniumHubVaadin)// exception
         );
 }
 

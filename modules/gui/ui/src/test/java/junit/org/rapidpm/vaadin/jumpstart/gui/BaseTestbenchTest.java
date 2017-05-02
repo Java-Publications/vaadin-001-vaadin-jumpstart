@@ -1,15 +1,18 @@
 package junit.org.rapidpm.vaadin.jumpstart.gui;
 
-import static junit.org.rapidpm.vaadin.jumpstart.gui.BrowserDriverSupplier.webDriver;
 import static org.rapidpm.frp.matcher.Case.match;
 import static org.rapidpm.frp.matcher.Case.matchCase;
+import static org.rapidpm.frp.memoizer.Memoizer.memoize;
 import static org.rapidpm.frp.model.Result.success;
+import static org.rapidpm.frp.vaadin.addon.testbench.BrowserDriverFunctions.ipSupplierLocalIP;
+import static org.rapidpm.frp.vaadin.addon.testbench.BrowserDriverFunctions.webDriver;
 import static org.rapidpm.microservice.MainUndertow.DEFAULT_SERVLET_PORT;
 import static org.rapidpm.microservice.MainUndertow.MYAPP;
 import static org.rapidpm.microservice.MainUndertow.SERVLET_PORT_PROPERTY;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
+import java.util.Optional;
+import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -32,8 +35,9 @@ import org.openqa.selenium.phantomjs.PhantomJSDriver;
 import org.openqa.selenium.remote.BrowserType;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.rapidpm.ddi.DI;
+import org.rapidpm.frp.functions.CheckedConsumer;
+import org.rapidpm.frp.functions.CheckedExecutor;
 import org.rapidpm.frp.matcher.Case;
-import org.rapidpm.frp.model.Pair;
 import org.rapidpm.frp.model.Quad;
 import org.rapidpm.frp.model.Result;
 import org.rapidpm.microservice.Main;
@@ -60,7 +64,8 @@ public class BaseTestbenchTest extends TestBenchTestCase {
     }
 
     @Test
-    public void doNothing() throws Exception {
+    public void doNothing()
+        throws Exception {
         Assert.assertTrue(true);
     }
 
@@ -88,22 +93,37 @@ public class BaseTestbenchTest extends TestBenchTestCase {
         DI.activatePackages("org.rapidpm");
         DI.activatePackages(this.getClass());
         DI.activateDI(this);
-        Main.stop();
         Main.deploy();
-        setUpTestbench();
+        ((CheckedExecutor) this::setUpTestbench)
+            .execute()
+            .bind(
+                sucess -> LOGGER.info("test is ready to runn.."),
+                failed -> LOGGER.warn("setting up Testbench faild for !! "
+                                      + dataConfig.getT1().get() + " - "
+                                      + dataConfig.getT2().get() + " - "
+                                      + dataConfig.getT3().get() + " - "
+                                      + dataConfig.getT4().get()
+                )
+            );
         saveScreenshot("001_before");
     }
 
-    public void setUpTestbench() throws Exception {
+    public void setUpTestbench()
+        throws Exception {
 
-        LOGGER.info("Running Config " + dataConfig.getT1() + " " + dataConfig.getT2() + " " + dataConfig.getT3() + " " + dataConfig.getT4());
+        LOGGER.info("Running Config " + dataConfig.getT1() + " "
+                    + dataConfig.getT2() + " "
+                    + dataConfig.getT3() + " "
+                    + dataConfig.getT4());
 
         //browserType, platform, runningLocal, seleniumHubIP
         webDriver
-            .apply(dataConfig.getT1(), dataConfig.getT2(), dataConfig.getT3(), dataConfig.getT4())
+            .apply(dataConfig.getT1(), dataConfig.getT2(),
+                   dataConfig.getT3(), dataConfig.getT4())
             .ifPresent(this::setDriver);
 
-        getDriver().get(baseURL() + "?restartApplication");
+        Optional.ofNullable(getDriver())
+                .ifPresent(d -> d.get(baseURL() + "?restartApplication"));
 
         if (getDriver() instanceof PhantomJSDriver) {
             final Capabilities remoteWebDriverCapabilities = ((RemoteWebDriver) getDriver()).getCapabilities();
@@ -112,27 +132,30 @@ public class BaseTestbenchTest extends TestBenchTestCase {
                     getCommandExecutor().resizeViewPortTo(1280, 768);
                 }
         }
+
         getCommandExecutor().enableWaitForVaadin();
-//        String pageSource = getDriver().getPageSource();
-//        String errorMsg = "Application is not available at " + baseURL() + ". Server not started?";
-//        Assert.assertFalse(errorMsg, pageSource.contains("HTTP Status 404") || pageSource.contains("can't establish a connection to the server"));
+        //        String pageSource = getDriver().getPageSource();
+        //        String errorMsg = "Application is not available at " + baseURL() + ". Server not started?";
+        //        Assert.assertFalse(errorMsg, pageSource.contains("HTTP Status 404") || pageSource.contains("can't establish a connection to the server"));
     }
 
     @After
     public void tearDown()
         throws Exception {
-        saveScreenshot("002_after");
-        tearDownTestbench();
-        Main.stop();
-        DI.clearReflectionModel();
+        ((CheckedExecutor) () -> saveScreenshot("002_after")).execute();
+        ((CheckedExecutor) this::tearDownTestbench).execute();
+        ((CheckedExecutor) Main::stop).execute();
+        ((CheckedExecutor) DI::clearReflectionModel).execute();
     }
 
-    public void tearDownTestbench() throws Exception {
-        WebDriver driver = getDriver();
-        if (driver != null) driver.quit();
+    public void tearDownTestbench()
+        throws Exception {
+        Optional
+            .ofNullable(getDriver())
+            .ifPresent(WebDriver::quit);
     }
+
     //TestBenchCommandExecutor
-
     public Function<TestBenchDriverProxy, Result<byte[]>> takeScreenshot = (proxy) -> {
         final WebDriver actualDriver = proxy.getActualDriver();
         return Case.match(
@@ -141,30 +164,52 @@ public class BaseTestbenchTest extends TestBenchTestCase {
             Case.matchCase(() -> !(actualDriver instanceof TakesScreenshot), () -> Result.failure("actualDriver is not instanceof TakesScreenshot")));
     };
 
-    protected void saveScreenshot(String name)
-        throws IOException {
+    public BiConsumer<String, byte[]> fileWriter = (fileName, bytes) -> {
+        final File file = new File("target", fileName);
+
+        ((CheckedExecutor) () -> {
+            final FileOutputStream fileOutputStream = new FileOutputStream(file);
+            fileOutputStream.write(bytes);
+            fileOutputStream.flush();
+            fileOutputStream.close();
+        })
+            .execute()
+            .bind(
+                success -> LOGGER.info("file sucessfull writen " + file.getAbsolutePath()),
+                LOGGER::warn);
+    };
+
+    protected void saveScreenshot(String name) {
         String fileName = String.format("%s_%s.png", getClass().getSimpleName() + "_" + testName.getMethodName(), name);
 
-        final WebDriver webDriver = getDriver();
-        match(
-            matchCase(() -> success(((TakesScreenshot) webDriver).getScreenshotAs(OutputType.BYTES))),
-            matchCase(() -> webDriver instanceof RemoteWebDriver, () -> success(((RemoteWebDriver) webDriver).getScreenshotAs(OutputType.BYTES))),
-            matchCase(() -> webDriver instanceof TestBenchDriverProxy, ()-> takeScreenshot.apply((TestBenchDriverProxy)webDriver)))
-            .bind(bytes -> {
-                File file = new File("target", fileName);
-                try (final FileOutputStream fileOutputStream = new FileOutputStream(file)) {
-                    fileOutputStream.write(bytes);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    LOGGER.warn(e.getMessage());
-                }
-            }, LOGGER::warn);
+        Optional
+            .ofNullable(getDriver())
+            .ifPresent((webDriver) -> {
+                CheckedConsumer<WebDriver> execute = (driver) -> {
+                    match(
+                        matchCase(() -> success(((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES))),
+                        matchCase(() -> driver instanceof RemoteWebDriver,
+                                  () -> success(((RemoteWebDriver) driver).getScreenshotAs(OutputType.BYTES))),
+                        matchCase(() -> driver instanceof TestBenchDriverProxy,
+                                  () -> takeScreenshot.apply((TestBenchDriverProxy) driver)))
+                        .bind((bytes) -> fileWriter.accept(fileName, bytes), LOGGER::warn);
+                    return null;
+                };
+                execute.apply(webDriver)
+                       .bind(aVoid -> LOGGER.info("saveScreenshot was ok " + fileName),
+                             LOGGER::warn);
+
+            });
     }
 
+    private Supplier<String> memoizedLocalIpSupplier = memoize(ipSupplierLocalIP);
+
+    private Supplier<String> memoizedServletPortSupplier = memoize(() -> System.getProperty(SERVLET_PORT_PROPERTY) == null
+        ? DEFAULT_SERVLET_PORT + ""
+        : System.getProperty(SERVLET_PORT_PROPERTY));
+
     public String baseURL() {
-        final String key = SERVLET_PORT_PROPERTY;
-        final String actualUsedServletPort = System.getProperty(key) == null ? DEFAULT_SERVLET_PORT + "" : System.getProperty(key);
-        return "http://" + Context.ipSupplierLocalIP.get() + ":" + actualUsedServletPort + "/" + MYAPP;
+        return "http://" + memoizedLocalIpSupplier.get() + ":" + memoizedServletPortSupplier.get() + "/" + MYAPP;
     }
 
 }
