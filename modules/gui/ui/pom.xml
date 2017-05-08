@@ -3,13 +3,13 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>charts-jumpstart-modules-gui</artifactId>
+        <artifactId>vaadin-jumpstart-modules-gui</artifactId>
         <groupId>org.rapidpm.vaadin</groupId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>charts-jumpstart-modules-gui-ui</artifactId>
+    <artifactId>vaadin-jumpstart-modules-gui-ui</artifactId>
 
 
     <!--<properties>-->
@@ -21,34 +21,34 @@
         <!-- Custom components -->
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>charts-jumpstart-modules-gui-widgetset</artifactId>
+            <artifactId>vaadin-jumpstart-modules-gui-widgetset</artifactId>
         </dependency>
 
         <!--generated with Designer-->
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>charts-jumpstart-modules-gui-design</artifactId>
+            <artifactId>vaadin-jumpstart-modules-gui-design</artifactId>
         </dependency>
 
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>charts-jumpstart-modules-gui-ui-logic</artifactId>
+            <artifactId>vaadin-jumpstart-modules-gui-ui-logic</artifactId>
         </dependency>
 
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>charts-jumpstart-modules-backend-logic</artifactId>
+            <artifactId>vaadin-jumpstart-modules-backend-logic</artifactId>
         </dependency>
 
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>charts-jumpstart-modules-backend-storage-plainjdbc
+            <artifactId>vaadin-jumpstart-modules-backend-storage-plainjdbc
             </artifactId>
         </dependency>
 
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>charts-jumpstart-modules-microservice</artifactId>
+            <artifactId>vaadin-jumpstart-modules-microservice</artifactId>
         </dependency>
 
         <!--Core Vaadin Stuff-->
@@ -320,8 +320,6 @@
                                         </dependsOn>
                                     </run>
                                 </image>
-
-
                             </images>
                         </configuration>
                         <executions>
@@ -350,8 +348,6 @@
                 </plugins>
             </build>
         </profile>
-
-
         <profile>
             <id>docker-microservice-ui-shade</id>
             <activation>
@@ -433,9 +429,5 @@
                 </plugins>
             </build>
         </profile>
-
-
     </profiles>
-
-
 </project>
