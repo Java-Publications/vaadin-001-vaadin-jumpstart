@@ -18,6 +18,7 @@ An industrial style multi module maven project
 
 ## Preparations
 The follwoing things are not automatically managed by initial mvn clean install.
+
 ### install Docker
 To test with the Selenium Hub you need to install Docker on your machine. [Docker Install](https://docs.docker.com/engine/installation/)
 
